@@ -1,0 +1,102 @@
+using System.Collections;
+using System.Collections.Generic;
+using JetBrains.Annotations;
+using UnityEngine;
+using UnityEngine.AI;
+
+[CreateAssetMenu]
+public class PatrolState : State
+{
+    public int startPatrolArea;
+    public float speed;
+    public float minWaitTime;
+    public float maxWaitTime;
+
+    private NavMeshAgent agent;
+    private GameObject currentPatrolArea;
+    private List<Transform> currentPatrolPoints;
+    private List<Transform> nearestPoints;
+    private Transform currentPoint;
+    private float waitTimer;
+    private Animator animator;
+
+    public override void Init()
+    {
+        animator = unit.GetComponent<Animator>();
+        agent = unit.GetComponent<NavMeshAgent>();
+        agent.speed = 0;
+
+        currentPatrolArea = GameObject.Find("Area" + startPatrolArea);
+        currentPatrolPoints = new List<Transform>();
+
+        Transform[] arrayPoints = currentPatrolArea.GetComponentsInChildren<Transform>();
+        currentPoint = null;
+        foreach (Transform point in arrayPoints)
+        {
+            currentPatrolPoints.Add(point);
+        }
+
+        waitTimer = Random.Range(minWaitTime, maxWaitTime);
+
+        ChooseNextPoint();
+
+    }
+
+    public override void Run()
+    {
+        if (isFinished == false && waitTimer <= 0)
+        {
+            agent.speed = speed;
+            Move();
+            animState = AnimState.Walk;
+        }
+        else if(waitTimer > 0)
+        {
+            waitTimer -= Time.deltaTime;
+            animState = AnimState.Stay;
+        }
+    }
+
+    void Move()
+    {
+        Vector3 targetPos = new Vector3(currentPoint.position.x, currentPoint.position.y, currentPoint.position.z);
+
+        if (agent.destination != targetPos && Vector3.Distance(unit.transform.position, targetPos) >=2)
+        {
+            agent.destination = targetPos;
+        }
+        else if (Vector3.Distance(unit.transform.position, targetPos) <= 2 && isFinished == false)
+        {
+            agent.speed = 0;
+            isFinished = true;
+        }
+    }
+
+    void ChooseNextPoint()
+    {
+        currentPatrolPoints.Sort((a, b) => Vector3.Distance(unit.transform.position, a.position).CompareTo(Vector3.Distance(unit.transform.position, b.position)));
+        nearestPoints = new List<Transform>();
+        nearestPoints.Clear();
+        if (currentPatrolPoints[0] != currentPoint)
+        {
+            nearestPoints.Add(currentPatrolPoints[0]);
+        }
+        if (currentPatrolPoints[1] != currentPoint)
+        {
+            nearestPoints.Add(currentPatrolPoints[1]);
+        }
+        if (currentPatrolPoints[2] != currentPoint)
+        {
+            nearestPoints.Add(currentPatrolPoints[2]);
+        }
+        if (currentPatrolPoints[3] != currentPoint)
+        {
+            nearestPoints.Add(currentPatrolPoints[3]);
+        }
+
+        currentPoint = nearestPoints[Random.Range(0, 3)];
+    }
+
+    
+
+}
