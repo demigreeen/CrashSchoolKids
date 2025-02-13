@@ -33,7 +33,10 @@ public class PatrolState : State
         currentPoint = null;
         foreach (Transform point in arrayPoints)
         {
-            currentPatrolPoints.Add(point);
+            if (point.name != "Area" + startPatrolArea)
+            {
+                currentPatrolPoints.Add(point);
+            }
         }
 
         waitTimer = Random.Range(minWaitTime, maxWaitTime);
@@ -61,11 +64,11 @@ public class PatrolState : State
     {
         Vector3 targetPos = new Vector3(currentPoint.position.x, currentPoint.position.y, currentPoint.position.z);
 
-        if (agent.destination != targetPos && Vector3.Distance(unit.transform.position, targetPos) >=2)
+        if (agent.enabled == true && agent.destination != targetPos && Vector3.Distance(unit.transform.position, targetPos) >=2)
         {
             agent.destination = targetPos;
         }
-        else if (Vector3.Distance(unit.transform.position, targetPos) <= 2 && isFinished == false)
+        else if (agent.enabled == true && Vector3.Distance(unit.transform.position, targetPos) <= 2 && isFinished == false)
         {
             agent.speed = 0;
             isFinished = true;

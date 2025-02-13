@@ -67,7 +67,7 @@ public class LookAroundState : State
             {
                 if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Classmate"))
                 {
-                    if (unit.GetComponent<Teacher>() != null && hit.transform.gameObject != null)
+                    if (unit.GetComponent<Teacher>() != null)
                     {
                         unit.GetComponent<Teacher>().SomeoneInSight(hit.transform.gameObject);
                     }
@@ -78,13 +78,13 @@ public class LookAroundState : State
         Debug.DrawRay(pointEye2.position, modelTeacher.forward * lookDistance, Color.red);
         if (Physics.Raycast(pointEye2.transform.position, modelTeacher.forward, out RaycastHit hit2, lookDistance))
         {
-            if (hit.transform != null)
+            if (hit2.transform != null)
             {
-                if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Classmate"))
+                if (hit2.transform.CompareTag("Player") || hit2.transform.CompareTag("Classmate"))
                 {
-                    if (unit.GetComponent<Teacher>() != null && hit.transform.gameObject != null)
+                    if (unit.GetComponent<Teacher>() != null)
                     {
-                        unit.GetComponent<Teacher>().SomeoneInSight(hit.transform.gameObject);
+                        unit.GetComponent<Teacher>().SomeoneInSight(hit2.transform.gameObject);
                     }
                 }
             }

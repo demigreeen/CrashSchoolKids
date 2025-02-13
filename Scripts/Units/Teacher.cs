@@ -26,8 +26,11 @@ public class Teacher : Unit
 
     [Space(20)]
     [SerializeField] private DragAndDropItem playerDragAndDrop;
+    [SerializeField] private ProgressBar progressBar;
+    [SerializeField] private CutsceneManager cutsceneManager;
 
-    [HideInInspector] public GameObject angryToUnit;
+
+   [HideInInspector] public GameObject angryToUnit;
 
    
     public override void Start()
@@ -69,9 +72,17 @@ public class Teacher : Unit
 
     public void GameOver()
     {
-        Debug.Log(angryToUnit.name + " пойман, проигрываем таймлайн с наказанием.");
-        angryToUnit = null;
-        SetState(PatrolState, ref patrolStateName);
+        if (angryToUnit != null)
+        {
+            progressBar.DoIconStep(angryToUnit);
+            SetState(PatrolState, ref patrolStateName);
+            cutsceneManager.StartCutscene(angryToUnit);
+            angryToUnit = null;
+        }
+        else
+        {
+            SetState(PatrolState, ref patrolStateName);
+        }
     }
 
 }
