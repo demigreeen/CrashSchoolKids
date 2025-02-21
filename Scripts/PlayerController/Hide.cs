@@ -18,6 +18,8 @@ public class Hide : MonoBehaviour
     private bool isHide;
 
     private Transform startPlayerTransform;
+    private Vector3 startPlayerPosition;
+    private Transform startCameraTransform;
     private PlayerController playerController;
     private CapsuleCollider capsuleCollider;
     private Rigidbody rb;
@@ -36,17 +38,19 @@ public class Hide : MonoBehaviour
     {
         player.position = Vector3.Lerp(player.position, hideInObject.pointForCamera.position, speed * Time.deltaTime);
         player.rotation = Quaternion.Lerp(player.rotation, hideInObject.pointForCamera.rotation, speed * Time.deltaTime);
-        playerController.enabled= false;
-        capsuleCollider.enabled = false;
+        mainCamera.rotation = new Quaternion(0, mainCamera.rotation.y, 0, mainCamera.rotation.w);
+        playerController.enabled = false;
+        capsuleCollider.isTrigger = true;
         rb.isKinematic = true;
     }
 
     void GetOut()
     {
-        player.position = startPlayerTransform.position;
+        player.position = startPlayerPosition;
         player.rotation = startPlayerTransform.rotation;
+        mainCamera.rotation = startCameraTransform.rotation;
         playerController.enabled = true;
-        capsuleCollider.enabled = true;
+        capsuleCollider.isTrigger = false;
         rb.isKinematic = false;
         hideInObject = null;
     }
@@ -58,8 +62,11 @@ public class Hide : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E) && isHide == false)
             {
                 startPlayerTransform = null;
+                startCameraTransform = null;
                 isHide = true;
+                startCameraTransform = mainCamera.transform;
                 startPlayerTransform = player.transform;
+                startPlayerPosition = player.position;
 
                 GetIn();
             }

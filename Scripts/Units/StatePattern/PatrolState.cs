@@ -19,12 +19,14 @@ public class PatrolState : State
     private Transform currentPoint;
     private float waitTimer;
     private Animator animator;
+    private bool isClassmate;
 
     public override void Init()
     {
         animator = unit.GetComponent<Animator>();
         agent = unit.GetComponent<NavMeshAgent>();
         agent.speed = 0;
+        isClassmate = unit.GetComponent<Classmate>() != null;
 
         currentPatrolArea = GameObject.Find("Area" + startPatrolArea);
         currentPatrolPoints = new List<Transform>();
@@ -51,12 +53,12 @@ public class PatrolState : State
         {
             agent.speed = speed;
             Move();
-            animState = AnimState.Walk;
+            if (isClassmate == false) animState = AnimState.Walk;
         }
         else if(waitTimer > 0)
         {
             waitTimer -= Time.deltaTime;
-            animState = AnimState.Stay;
+            if (isClassmate == false) animState = AnimState.Stay;
         }
     }
 

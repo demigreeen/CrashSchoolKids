@@ -7,8 +7,10 @@ public class Classmate : Unit
     [Space(10)]
     [Header("Custom")]
     [SerializeField] private State patrolState;
+    [SerializeField] private State shockedState;
 
     private string patrolStateName;
+    private string shockedStateName;
 
     public override void Start()
     {
@@ -25,6 +27,11 @@ public class Classmate : Unit
                 SetState(patrolState, ref patrolStateName);
             }
         }
+    }
+
+    public void Shocked()
+    {
+        SetState(shockedState, ref shockedStateName);
     }
 
 }

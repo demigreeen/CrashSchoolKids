@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class DragAndDropItem : MonoBehaviour
@@ -25,7 +26,12 @@ public class DragAndDropItem : MonoBehaviour
     [SerializeField] private float forceDrop;
     [SerializeField] private float timeBeforeNextDrag;
 
-     [HideInInspector] public GameObject holdItem { get; private set; }
+    [Space(10)]
+    [Header("Detect Sphera Classmates")]
+    [SerializeField] private float radius;
+    [SerializeField] private LayerMask detectedLayerMask;
+    [SerializeField] private LayerMask detectedLayerMask2;
+    [HideInInspector] public GameObject holdItem { get; private set; }
 
 
      private List<GameObject> nearItems;
@@ -120,6 +126,8 @@ public class DragAndDropItem : MonoBehaviour
         isHandsEmpty = true;
 
         timeBeforeNextDragCode = timeBeforeNextDrag;
+
+        CheckNearClassmates();
     }
 
     // Лепим канвас с иконкой на предмет, который ближе всех
@@ -157,6 +165,37 @@ public class DragAndDropItem : MonoBehaviour
         }
     }
 
+    // Проверяем на наличие одноклассников во время броска
+    void CheckNearClassmates()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, detectedLayerMask);
+        if (hitColliders.Length > 0)
+        {
+            foreach (var unit in hitColliders)
+            {
+                CheckNearClassmatesLook(unit.gameObject);
+            }
+        }
+    }
+
+    void CheckNearClassmatesLook(GameObject classmate)
+    {
+        Vector3 directionToPlayer = (classmate.transform.position - transform.position).normalized;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, directionToPlayer, out hit, radius, detectedLayerMask2))
+        {
+            if (hit.transform != null)
+             {
+                Debug.Log(hit.transform.name);
+                if (hit.transform.CompareTag("Classmate"))
+                 {
+                    classmate.GetComponent<Classmate>().Shocked();
+                 }
+             }
+            }
+    }
+
+
     // Если вызывать в update CheckDistanceToItems() могут быть визуальные баги поэтому корутина
     IEnumerator ICheckDistance()
     {
@@ -183,3 +222,4 @@ public class DragAndDropItem : MonoBehaviour
         }
     }
 }
+
