@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class SliceItem : MonoBehaviour
 {
+    [Header("Slice")]
     public MeshFilter[] slicePlanes;
+    [Header("Just Remove Object")]
+    public bool isJustRemove;
+    public GameObject removeObj;
+
 
     bool[] isSliced;
     IBzSliceableNoRepeat sliceObj;
@@ -21,15 +26,26 @@ public class SliceItem : MonoBehaviour
     {
         if (rigidbody.isKinematic == false && collision.gameObject.layer == LayerMask.NameToLayer("Ground") && rigidbody.velocity.y < 0.1f && rigidbody.velocity.y > -0.1f)
         {
-            for (int i = 0; i < slicePlanes.Length; i++)
+            if (isJustRemove == false)
             {
-                if (isSliced[i] == false)
+                for (int i = 0; i < slicePlanes.Length; i++)
                 {
-                    MeshFilter filter = slicePlanes[i];
-                    Vector3 normal = filter.transform.TransformDirection(filter.mesh.normals[0]);
-                    var plane = new Plane(normal, filter.gameObject.transform.position);
-                    sliceObj.Slice(plane, 0, null);
-                    isSliced[i] = true;
+                    if (isSliced[i] == false)
+                    {
+                        MeshFilter filter = slicePlanes[i];
+                        Vector3 normal = filter.transform.TransformDirection(filter.mesh.normals[0]);
+                        var plane = new Plane(normal, filter.gameObject.transform.position);
+                        sliceObj.Slice(plane, 0, null);
+                        isSliced[i] = true;
+                    }
+                }
+            }
+            else
+            {
+                if(removeObj.transform.parent != null)
+                {
+                    removeObj.transform.parent = null;
+                    removeObj.AddComponent<Rigidbody>();
                 }
             }
         }

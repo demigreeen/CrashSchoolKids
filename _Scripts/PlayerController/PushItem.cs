@@ -20,6 +20,8 @@ public class PushItem : MonoBehaviour
     [SerializeField] private GameObject canvasButton;
     [SerializeField] private float canvasAutoScalerKoeff = 3;
 
+    private Transform pointForIcon;
+
     [Space(10)]
     [Header("Push")]
     [SerializeField] private float pushForce;
@@ -103,7 +105,7 @@ public class PushItem : MonoBehaviour
         if (nearestItem != null && timeBeforeNextDragCode <= 0)
         {
             canvasButton.SetActive(true);
-            canvasButton.transform.position = nearestItem.transform.position;
+            canvasButton.transform.position = pointForIcon.transform.position;
 
             canvasButton.transform.LookAt(mainCamera);
             canvasButton.transform.rotation = Quaternion.LookRotation(mainCamera.forward, Vector3.up);
@@ -125,10 +127,12 @@ public class PushItem : MonoBehaviour
             nearItems.Sort((a, b) => Vector3.Distance(playerPos.position, a.transform.position).CompareTo(Vector3.Distance(transform.position, b.transform.position)));
 
             nearestItem = nearItems[0];
+            pointForIcon = nearestItem.GetComponentInChildren<Point>().gameObject.transform;
         }
         else
         {
             nearestItem = null;
+            pointForIcon = null;
         }
     }
 

@@ -18,6 +18,8 @@ public class DragAndDropItem : MonoBehaviour
     [SerializeField] private GameObject canvasButton;
     [SerializeField] private float canvasAutoScalerKoeff = 3;
 
+    private Transform pointForIcon;
+
     [Space(10)]
     [Header("Drag And Drop")]
     [SerializeField] private Transform handsPos;
@@ -88,7 +90,7 @@ public class DragAndDropItem : MonoBehaviour
     // Удержание
     void Hold()
     {
-        holdItem.transform.rotation = mainCamera.transform.rotation;
+        holdItem.transform.eulerAngles = new Vector3(mainCamera.transform.eulerAngles.x - 90f, mainCamera.transform.eulerAngles.y, mainCamera.transform.eulerAngles.z );
 
         if (holdItem.transform.position != handsPos.position && isItemMovedToHands == false)
         {
@@ -138,7 +140,7 @@ public class DragAndDropItem : MonoBehaviour
         if (nearestItem != null && isHandsEmpty == true && timeBeforeNextDragCode <= 0)
         {
             canvasButton.SetActive(true);
-            canvasButton.transform.position = nearestItem.transform.position;
+            canvasButton.transform.position = pointForIcon.position;
 
             canvasButton.transform.LookAt(mainCamera);
             canvasButton.transform.rotation = Quaternion.LookRotation(mainCamera.forward, Vector3.up);
@@ -160,6 +162,7 @@ public class DragAndDropItem : MonoBehaviour
             nearItems.Sort((a, b) => Vector3.Distance(playerPos.position, a.transform.position).CompareTo(Vector3.Distance(transform.position, b.transform.position)));
 
             nearestItem = nearItems[0];
+            pointForIcon = nearestItem.GetComponentInChildren<Point>().gameObject.transform;
         }
         else
         {
