@@ -68,6 +68,11 @@ public class MoveToDropItemState : State
     {
         targetPos = item.position;
 
+        if (Vector3.Distance(unit.transform.position, targetPos) > 1000F)
+        {
+            unit.GetComponent<Teacher>().GoPatrolState();
+        }
+
         if (agent.destination != targetPos && Vector3.Distance(unit.transform.position, targetPos) >= distToItem)
         {
             agent.destination = targetPos;

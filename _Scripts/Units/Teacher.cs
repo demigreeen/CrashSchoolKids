@@ -66,6 +66,10 @@ public class Teacher : Unit
     {
         SetState(GoToDropedItemState, ref goToDropedItemStateName);
     }
+    public void GoPatrolState()
+    {
+        SetState(PatrolState, ref patrolStateName);
+    }
     public void SomeoneInSight(GameObject angryToGo)
     {
         angryToUnit = angryToGo;

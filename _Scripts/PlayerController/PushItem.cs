@@ -90,12 +90,13 @@ public class PushItem : MonoBehaviour
 
         if (nearestItem.transform.CompareTag("PushItem"))
         {
-            pushItemRb.AddForce(new Vector3(UnityEngine.Random.Range(itemForPush.x - 0.03f, itemForPush.x + 0.03f), UnityEngine.Random.Range(itemForPush.y - 0.03f, itemForPush.y + 0.03f), UnityEngine.Random.Range(itemForPush.z - 0.03f, itemForPush.z + 0.03f))* pushForce, ForceMode.Impulse);
+            pushItemRb.AddForce(new Vector3(UnityEngine.Random.Range(itemForPush.x - 0.03f, itemForPush.x + 0.03f) / 2, UnityEngine.Random.Range(itemForPush.y - 0.03f, itemForPush.y + 0.03f) / 2, UnityEngine.Random.Range(itemForPush.z - 0.03f, itemForPush.z + 0.03f))* pushForce, ForceMode.Impulse);
             pushItemRb.AddForce(new Vector3(0, multipluPushUp, 0) * pushForce, ForceMode.Impulse);
             ForceSimilliarItems();
         }
 
         timeBeforeNextDragCode = timeBeforeNextDrag;
+        pointForIcon = null;
         CheckNearClassmates();
     }
 
@@ -141,13 +142,14 @@ public class PushItem : MonoBehaviour
         List<GameObject> delItems = new List<GameObject>();
         foreach (var item in nearItems)
         {
-            if (nearestItem.transform.name == item.transform.name)
+            if (nearestItem.transform.name == item.transform.name )
             {
                 delItems.Add(item);
                 Rigidbody rb = item.GetComponent<Rigidbody>();
                 ItemForPush itemForPush = rb.GetComponent<ItemForPush>();
                 rb.isKinematic = false;
-                
+
+
                 rb.AddForce(new Vector3(UnityEngine.Random.Range(itemForPush.x - 0.03f, itemForPush.x + 0.03f), UnityEngine.Random.Range(itemForPush.y - 0.03f, itemForPush.y + 0.03f), UnityEngine.Random.Range(itemForPush.z - 0.03f, itemForPush.z + 0.03f))  * pushForce, ForceMode.Impulse);
                 rb.AddForce(new Vector3(0, multipluPushUp, 0) * pushForce, ForceMode.Impulse);
                 
