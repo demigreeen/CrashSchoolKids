@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Door : MonoBehaviour
@@ -8,10 +9,14 @@ public class Door : MonoBehaviour
     public Transform goalRotation;
     public float speed = 10f;
     public LayerMask ignoreMasks;
+    public AudioSource audioOpen;
+    public AudioSource audioClose;
 
     private Quaternion startRotation;
     private bool isOpening = false;
     private GameObject currGo;
+
+    
 
     private void Start()
     {
@@ -23,10 +28,24 @@ public class Door : MonoBehaviour
        {
             rotateDoor.rotation = Quaternion.Lerp(rotateDoor.rotation, goalRotation.rotation, speed * Time.deltaTime);
        }
-       else
+       else if(rotateDoor.rotation != startRotation)
        {
             rotateDoor.rotation = Quaternion.Lerp(rotateDoor.rotation, startRotation, speed * Time.deltaTime);
-            currGo = null;
+            if (audioClose.isPlaying == false)
+            {
+                audioClose.Play();
+            }
+        }
+
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (isOpening == false && other.transform.gameObject.layer != LayerMask.NameToLayer("Ground") && other.transform.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast"))
+        {
+            if(audioOpen.isPlaying == false)
+            {
+                audioOpen.Play();
+            }
         }
     }
     void OnTriggerStay(Collider other)

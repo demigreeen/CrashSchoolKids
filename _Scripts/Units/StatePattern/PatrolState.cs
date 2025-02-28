@@ -53,12 +53,22 @@ public class PatrolState : State
         {
             agent.speed = speed;
             Move();
-            if (isClassmate == false) animState = AnimState.Walk;
+            
+                if (animState != AnimState.Walk)
+                {
+                    animState = AnimState.Walk;
+                }
+            
         }
         else if(waitTimer > 0)
         {
             waitTimer -= Time.deltaTime;
-            if (isClassmate == false) animState = AnimState.Stay;
+           
+                if (animState != AnimState.Stay)
+                {
+                    animState = AnimState.Stay;
+                }
+            
         }
     }
 
@@ -98,8 +108,12 @@ public class PatrolState : State
         {
             nearestPoints.Add(currentPatrolPoints[3]);
         }
+        if (currentPatrolPoints[4] != currentPoint)
+        {
+            nearestPoints.Add(currentPatrolPoints[4]);
+        }
 
-        currentPoint = nearestPoints[Random.Range(0, 3)];
+        currentPoint = nearestPoints[Random.Range(0, 4)];
     }
 
     

@@ -13,6 +13,7 @@ public class MoveToDropItemState : State
     public float visionDistance;
     public float visionRadius;
     public LayerMask detectedLayerMask;
+    public LayerMask detectedLayerMask2;
     [Space(10)]
     public float speed;
 
@@ -32,15 +33,17 @@ public class MoveToDropItemState : State
 
     public override void Init()
     {
+
         if (unit.GetComponent<Teacher>() != null)
         {
-            modelTeacher = GameObject.Find("ModelTeacher").GetComponent<Transform>();
+            modelTeacher = GameObject.Find("mixamorig:Head").GetComponent<Transform>();
             pointEye1 = GameObject.Find("PointEye1").GetComponent<Transform>();
             pointEye2 = GameObject.Find("PointEye2").GetComponent<Transform>();
         }
 
         animator = unit.GetComponent<Animator>();
         agent = unit.GetComponent<NavMeshAgent>();
+        agent.enabled = true;
         agent.speed = speed;
 
         if (FindObjectOfType<DragAndDropItem>().holdItem != null)
@@ -62,7 +65,7 @@ public class MoveToDropItemState : State
         timerBeforeStartLook -= Time.deltaTime;
         animState = AnimState.Run;
         Move();
-    }
+        }
 
     void Move()
     {
@@ -86,28 +89,35 @@ public class MoveToDropItemState : State
 
         if (timerBeforeStartLook < 0)
         {
-                    CheckLook();
+               CheckLook();
         }
     }
 
     void CheckLook()
     {
+        
         CheckUnits();
-
         if (probablyTargerUnit != null)
         {
-            Vector3 directionToPlayer = (probablyTargerUnit.transform.position - unit.transform.position).normalized;
-            float angleToPlayer = Vector3.Angle(unit.transform.forward, directionToPlayer);
-            if (angleToPlayer < visionAngle / 2)
+
+            Vector3 directionToPlayer = (probablyTargerUnit.transform.position - pointEye1.transform.position).normalized;
+            directionToPlayer = new Vector3(directionToPlayer.x, directionToPlayer.y , directionToPlayer.z);
+            float angleToPlayer = Vector3.Angle(pointEye1.transform.forward, directionToPlayer);
+           Debug.Log(""+probablyTargerUnit +""+ angleToPlayer);
+            if (angleToPlayer < visionAngle)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(unit.transform.position, directionToPlayer, out hit, visionDistance))
+                
+                if (Physics.Raycast(pointEye1.transform.position, directionToPlayer, out hit, visionDistance, detectedLayerMask2))
                 {
                     if (hit.transform != null)
                     {
                         if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Classmate"))
                         {
-                            unit.GetComponent<Teacher>().SomeoneInSight(hit.transform.gameObject);
+                            if (hit.transform.GetComponent<CapsuleCollider>().isTrigger == false)
+                            {
+                                unit.GetComponent<Teacher>().SomeoneInSight(hit.transform.gameObject);
+                            }
                         }
                     }
                 }
@@ -119,9 +129,11 @@ public class MoveToDropItemState : State
     {
         if (Vector3.Distance(unit.transform.position, targetPos) < visionStartDistance)
         {
+            
             Collider[] hitColliders = Physics.OverlapSphere(unit.transform.position, visionRadius, detectedLayerMask);
             if (hitColliders.Length > 0)
             {
+               
                 List<Collider> hitCollidersList = new List<Collider>();
                 foreach (var unit in hitColliders)
                 {

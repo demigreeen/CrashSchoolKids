@@ -36,7 +36,7 @@ public class AngryStayState : State
         else
         {
             agent.speed = 0;
-            animState = AnimState.Stay;
+            animState = AnimState.AngryStay;
         }
 
         CheckLook();
@@ -59,7 +59,10 @@ public class AngryStayState : State
                     {
                         if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Classmate"))
                         {
-                            unit.GetComponent<Teacher>().SomeoneInSight(hit.transform.gameObject);
+                            if (hit.transform.GetComponent<CapsuleCollider>().isTrigger == false)
+                            {
+                                unit.GetComponent<Teacher>().SomeoneInSight(hit.transform.gameObject);
+                            }
                         }
                     }
                 }

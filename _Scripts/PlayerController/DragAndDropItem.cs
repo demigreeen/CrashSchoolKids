@@ -59,6 +59,7 @@ public class DragAndDropItem : MonoBehaviour
 
         if (isHandsEmpty == false) { Hold(); };
         timeBeforeNextDragCode -= Time.deltaTime;
+
     }
 
 
@@ -116,6 +117,7 @@ public class DragAndDropItem : MonoBehaviour
             if (FindObjectOfType<Teacher>().currentState.name != FindObjectOfType<Teacher>().angryStateName)
             {
                 ItemDroped();
+                Debug.Log("drop");
             }
         }
 
@@ -173,7 +175,7 @@ public class DragAndDropItem : MonoBehaviour
     // Проверяем на наличие одноклассников во время броска
     void CheckNearClassmates()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius, detectedLayerMask);
+        Collider[] hitColliders = Physics.OverlapSphere(playerPos.transform.position, radius, detectedLayerMask);
         if (hitColliders.Length > 0)
         {
             foreach (var unit in hitColliders)
@@ -185,18 +187,27 @@ public class DragAndDropItem : MonoBehaviour
 
     void CheckNearClassmatesLook(GameObject classmate)
     {
-        Vector3 directionToPlayer = (classmate.transform.position - transform.position).normalized;
+        Vector3 directionToPlayer = (classmate.transform.position - playerPos.transform.position);
+        directionToPlayer = new Vector3(directionToPlayer.x, directionToPlayer.y + 2, directionToPlayer.z);
         RaycastHit hit;
         if (Physics.Raycast(transform.position, directionToPlayer, out hit, radius, detectedLayerMask2))
         {
+           
             if (hit.transform != null)
              {
+                Debug.Log(6);
                 if (hit.transform.CompareTag("Classmate"))
                  {
+                    Debug.Log(7);
                     classmate.GetComponent<Classmate>().Shocked();
                  }
+                else
+                {
+                    Debug.Log(hit.transform.name);
+                }
              }
-            }
+        }
+        
     }
 
 

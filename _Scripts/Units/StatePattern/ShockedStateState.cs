@@ -19,9 +19,9 @@ public class ShockedState : State
 
     public override void Run()
     {
-       
-            agent.speed = 0;
-            animState = AnimState.Stay;
+
+        agent.speed = 0f;
+        animState = AnimState.Shocked;
         
     }
 }

@@ -14,14 +14,14 @@ public class LookAroundState : State
     [Space(10)]
     public int repeatCount;
 
-    private float currentRepeatCount;
+    public float currentRepeatCount;
     private float offsetUpdate;
     private Animator animator;
     private NavMeshAgent agent;
 
-    private Transform modelTeacher;
-    private Transform pointEye1;
-    private Transform pointEye2;
+    private GameObject modelTeacher;
+    private GameObject pointEye1;
+    private GameObject pointEye2;
     public override void Init()
     {
         animator = unit.GetComponent<Animator>();
@@ -29,9 +29,9 @@ public class LookAroundState : State
 
         if (unit.GetComponent<Teacher>() != null)
         {
-            modelTeacher = GameObject.Find("ModelTeacher").GetComponent<Transform>();
-            pointEye1 = GameObject.Find("PointEye1").GetComponent<Transform>();
-            pointEye2 = GameObject.Find("PointEye2").GetComponent<Transform>();
+            modelTeacher = GameObject.Find("mixamorig:Head");
+            pointEye1 = GameObject.Find("PointEye1");
+            pointEye2 = GameObject.Find("PointEye2");
         }
 
     }
@@ -47,21 +47,24 @@ public class LookAroundState : State
         {
             animState = AnimState.LookAround;
             currentRepeatCount++;
-            offsetUpdate = animator.GetCurrentAnimatorStateInfo(0).length;
+            offsetUpdate = 2.9f;
         }
-        else if (offsetUpdate > 0)
+        else if (offsetUpdate > 0 && currentRepeatCount < repeatCount)
         {
             offsetUpdate -= Time.deltaTime;
         }
-        else if (currentRepeatCount >= repeatCount)
+        else if (animState == AnimState.LookAround && currentRepeatCount >= repeatCount && offsetUpdate <= 0)
         {
             isFinished = true;
         }
+        else offsetUpdate -= Time.deltaTime;
     }
+
     void CheckLook()
     {
-        Debug.DrawRay(pointEye1.position, modelTeacher.forward * lookDistance, Color.red);
-        if (Physics.Raycast(pointEye1.transform.position, modelTeacher.forward, out RaycastHit hit, lookDistance))
+        Debug.DrawRay(pointEye1.transform.position, pointEye1.transform.forward * lookDistance, Color.red);
+        Debug.Log("look");
+        if (Physics.Raycast(pointEye1.transform.position, pointEye1.transform.forward, out RaycastHit hit, lookDistance))
         {
             if (hit.transform != null)
             {
@@ -78,8 +81,8 @@ public class LookAroundState : State
             }
         }
 
-        Debug.DrawRay(pointEye2.position, modelTeacher.forward * lookDistance, Color.red);
-        if (Physics.Raycast(pointEye2.transform.position, modelTeacher.forward, out RaycastHit hit2, lookDistance))
+        Debug.DrawRay(pointEye2.transform.position, pointEye2.transform.forward * lookDistance, Color.red);
+        if (Physics.Raycast(pointEye2.transform.position, pointEye2.transform.forward, out RaycastHit hit2, lookDistance))
         {
             if (hit2.transform != null)
             {

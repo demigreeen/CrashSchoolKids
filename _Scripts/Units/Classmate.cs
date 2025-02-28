@@ -8,9 +8,12 @@ public class Classmate : Unit
     [Header("Custom")]
     [SerializeField] private State patrolState;
     [SerializeField] private State shockedState;
+    [SerializeField] private State DoNothingState;
 
-    private string patrolStateName;
-    private string shockedStateName;
+
+    [HideInInspector] public string patrolStateName;
+    [HideInInspector] public string shockedStateName;
+    [HideInInspector] public string DoNothingStateName;
 
     public override void Start()
     {
@@ -28,7 +31,10 @@ public class Classmate : Unit
             }
         }
     }
-
+    public void GoDoNothingState()
+    {
+        SetState(DoNothingState, ref DoNothingStateName);
+    }
     public void Shocked()
     {
         SetState(shockedState, ref shockedStateName);

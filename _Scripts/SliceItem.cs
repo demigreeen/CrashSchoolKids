@@ -7,9 +7,14 @@ public class SliceItem : MonoBehaviour
 {
     [Header("Slice")]
     public MeshFilter[] slicePlanes;
+    [Space(10)]
     [Header("Just Remove Object")]
     public bool isJustRemove;
-    public GameObject removeObj;
+    public List<GameObject> removeObj;
+    [Space(10)]
+    public AudioSource audio;
+
+    bool complete;
 
 
     bool[] isSliced;
@@ -24,29 +29,40 @@ public class SliceItem : MonoBehaviour
     
     private void OnCollisionStay(Collision collision)
     {
-        if (rigidbody.isKinematic == false && collision.gameObject.layer == LayerMask.NameToLayer("Ground") && rigidbody.velocity.y < 0.1f && rigidbody.velocity.y > -0.1f)
+        if (rigidbody.isKinematic == false && collision.gameObject.layer == LayerMask.NameToLayer("Ground") && rigidbody.velocity.y < 0.2f && rigidbody.velocity.y > -0.2f)
         {
-            if (isJustRemove == false)
+            if (complete == false)
             {
-                for (int i = 0; i < slicePlanes.Length; i++)
+                if (isJustRemove == false && isSliced.Length != 0)
                 {
-                    if (isSliced[i] == false)
+                    for (int i = 0; i < slicePlanes.Length; i++)
                     {
-                        MeshFilter filter = slicePlanes[i];
-                        Vector3 normal = filter.transform.TransformDirection(filter.mesh.normals[0]);
-                        var plane = new Plane(normal, filter.gameObject.transform.position);
-                        sliceObj.Slice(plane, 0, null);
-                        isSliced[i] = true;
+                        if (isSliced[i] == false)
+                        {
+                            MeshFilter filter = slicePlanes[i];
+                            Vector3 normal = filter.transform.TransformDirection(filter.mesh.normals[0]);
+                            var plane = new Plane(normal, filter.gameObject.transform.position);
+                            sliceObj.Slice(plane, 0, null);
+                            isSliced[i] = true;
+                        }
                     }
+                    complete = true;
                 }
-            }
-            else
-            {
-                if(removeObj.transform.parent != null)
+                else
                 {
-                    removeObj.transform.parent = null;
-                    removeObj.AddComponent<Rigidbody>();
+                    foreach (var obj in removeObj)
+                    {
+                        if (obj.transform.parent != null)
+                        {
+                            obj.transform.parent = null;
+                            obj.AddComponent<Rigidbody>();
+                        }
+                    }
+                    complete = true;
+
                 }
+
+                audio.Play();
             }
         }
     }

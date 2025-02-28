@@ -17,7 +17,10 @@ public abstract class State : ScriptableObject
         Stay,
         Walk,
         Run,
-        LookAround
+        LookAround,
+        AngryStay,
+        Sit,
+        Shocked
     }
     
 }

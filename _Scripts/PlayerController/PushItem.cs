@@ -27,6 +27,7 @@ public class PushItem : MonoBehaviour
     [SerializeField] private float pushForce;
     [SerializeField] private float multipluPushUp;
     [SerializeField] private float timeBeforeNextDrag;
+    [SerializeField] private AudioSource[] pushAudio;
 
     [Space(10)]
     [Header("Detect Sphera Classmates")]
@@ -95,6 +96,14 @@ public class PushItem : MonoBehaviour
             ForceSimilliarItems();
         }
 
+        if (pointForIcon != null && pointForIcon.GetComponent<Point>().audio != null)
+        {
+            pointForIcon.GetComponent<Point>().audio.Play();
+        }
+        else
+        {
+            pushAudio[UnityEngine.Random.Range(0, pushAudio.Length)].Play();
+        }
         timeBeforeNextDragCode = timeBeforeNextDrag;
         pointForIcon = null;
         CheckNearClassmates();
@@ -173,26 +182,11 @@ public class PushItem : MonoBehaviour
         {
             foreach (var unit in hitColliders)
             {
-                CheckNearClassmatesLook(unit.gameObject);
+                unit.GetComponent<Classmate>().Shocked();
             }
         }
     }
 
-    void CheckNearClassmatesLook(GameObject classmate)
-    {
-        Vector3 directionToPlayer = (classmate.transform.position - transform.position).normalized;
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, directionToPlayer, out hit, radius, detectedLayerMask2))
-        {
-            if (hit.transform != null)
-            {
-                if (hit.transform.CompareTag("Classmate"))
-                {
-                    classmate.GetComponent<Classmate>().Shocked();
-                }
-            }
-        }
-    }
 
 
 

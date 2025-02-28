@@ -4,6 +4,7 @@ using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEditor.Animations;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class Teacher : Unit
@@ -16,27 +17,38 @@ public class Teacher : Unit
     [SerializeField] private State AngryStayState;
     [SerializeField] private State LookAroundState;
     [SerializeField] private State AngryState;
+    [SerializeField] private State DoNothingState;
 
-    private string patrolStateName;
-    private string goToDropedItemStateName;
-    private string stayStateName;
-    private string lookAroundStateName;
+    [HideInInspector] public string patrolStateName;
+    [HideInInspector] public string goToDropedItemStateName;
+    [HideInInspector] public string stayStateName;
+    [HideInInspector] public string lookAroundStateName;
     [HideInInspector] public string angryStateName;
-    private string angryStayStateName;
+    [HideInInspector] public string angryStayStateName;
+    [HideInInspector] public string DoNothingStateName;
 
     [Space(20)]
     [SerializeField] private DragAndDropItem playerDragAndDrop;
     [SerializeField] private PushItem pushItem;
     [SerializeField] private ProgressBar progressBar;
     [SerializeField] private CutsceneManager cutsceneManager;
+    [Space(20)]
+    [Header("Audio")]
+    [SerializeField] public AudioSource walkAudio;
+    [SerializeField] public AudioSource angryMusic;
+    [SerializeField] public AudioSource basicMusic;
 
 
-   [HideInInspector] public GameObject angryToUnit;
+    [HideInInspector] public GameObject angryToUnit;
+
+    private NavMeshAgent agent;
 
    
     public override void Start()
     {
         base.Start();
+
+        agent = GetComponent<NavMeshAgent>();
 
         playerDragAndDrop.ItemDroped += GoToDropedItem;
         pushItem.ItemDroped += GoToDropedItem;
@@ -58,6 +70,29 @@ public class Teacher : Unit
             else
             {
                 SetState(PatrolState, ref patrolStateName);
+                if (angryMusic.isPlaying == true)
+                {
+                    angryMusic.Stop();
+                }
+                if (basicMusic.isPlaying == false)
+                {
+                    basicMusic.Play();
+                }
+            }
+        }
+
+        if (currentState.name == patrolStateName && agent.speed != 0)
+        {
+            if (walkAudio.isPlaying == false)
+            {
+                walkAudio.Play();
+            }
+        }
+        else
+        {
+            if (walkAudio.isPlaying == true)
+            {
+                walkAudio.Stop();
             }
         }
     }
@@ -65,10 +100,22 @@ public class Teacher : Unit
     public void GoToDropedItem()
     {
         SetState(GoToDropedItemState, ref goToDropedItemStateName);
+        if (basicMusic.isPlaying == true)
+        {
+            basicMusic.Stop();
+        }
+        if (angryMusic.isPlaying == false)
+        {
+            angryMusic.Play();
+        }
     }
     public void GoPatrolState()
     {
         SetState(PatrolState, ref patrolStateName);
+    }
+    public void GoDoNothingState()
+    {
+        SetState(DoNothingState, ref DoNothingStateName);
     }
     public void SomeoneInSight(GameObject angryToGo)
     {
