@@ -44,6 +44,7 @@ public class DragAndDropItem : MonoBehaviour
      private Rigidbody holdItemRb;
      private bool isItemMovedToHands;
      private float timeBeforeNextDragCode;
+    private DrugItem drugItem;
 
     public event Action ItemDroped;
 
@@ -71,7 +72,7 @@ public class DragAndDropItem : MonoBehaviour
             {
                 Drag();
             }
-            else if (isHandsEmpty == false)
+            else if (isHandsEmpty == false && drugItem.isCanDrop == true)
             {
                 Drop();
             }
@@ -82,8 +83,9 @@ public class DragAndDropItem : MonoBehaviour
     void Drag()
     {
         holdItem = nearestItem;
+        drugItem = holdItem.GetComponent<DrugItem>();
         holdItemRb = nearestItem.GetComponent<Rigidbody>();
-        holdItemRb.isKinematic = true;
+        holdItemRb.isKinematic = false;
         holdItemRb.excludeLayers = playerLayerForIgnor;
         isHandsEmpty = false;
     }
@@ -121,6 +123,7 @@ public class DragAndDropItem : MonoBehaviour
             }
         }
 
+        holdItemRb.isKinematic = true;
         holdItemRb.isKinematic = false;
 
         holdItemRb.AddForce(mainCamera.forward * forceDrop);
@@ -130,6 +133,11 @@ public class DragAndDropItem : MonoBehaviour
         holdItemRb = null;
         isItemMovedToHands = false;
         isHandsEmpty = true;
+
+        if (pointForIcon != null && pointForIcon.GetComponent<Point>().audio != null)
+        {
+            pointForIcon.GetComponent<Point>().audio.Play();
+        }
 
         timeBeforeNextDragCode = timeBeforeNextDrag;
 

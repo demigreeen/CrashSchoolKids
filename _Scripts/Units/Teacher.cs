@@ -36,7 +36,7 @@ public class Teacher : Unit
     [Header("Audio")]
     [SerializeField] public AudioSource walkAudio;
     [SerializeField] public AudioSource angryMusic;
-    [SerializeField] public AudioSource basicMusic;
+    public AudioSource basicMusic;
 
 
     [HideInInspector] public GameObject angryToUnit;
@@ -112,6 +112,14 @@ public class Teacher : Unit
     public void GoPatrolState()
     {
         SetState(PatrolState, ref patrolStateName);
+        if (angryMusic.isPlaying == true)
+        {
+            angryMusic.Stop();
+        }
+        if (basicMusic.isPlaying == false)
+        {
+            basicMusic.Play();
+        }
     }
     public void GoDoNothingState()
     {
@@ -135,6 +143,14 @@ public class Teacher : Unit
         else
         {
             SetState(PatrolState, ref patrolStateName);
+            if (angryMusic.isPlaying == true)
+            {
+                angryMusic.Stop();
+            }
+            if (basicMusic.isPlaying == false)
+            {
+                basicMusic.Play();
+            }
         }
     }
 

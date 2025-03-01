@@ -26,7 +26,15 @@ public class SliceItem : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         sliceObj = GetComponent<IBzSliceableNoRepeat>();
     }
-    
+
+    private void Update()
+    {
+        if (rigidbody.isKinematic == true)
+        {
+            complete = false;
+        }
+    }
+
     private void OnCollisionStay(Collision collision)
     {
         if (rigidbody.isKinematic == false && collision.gameObject.layer == LayerMask.NameToLayer("Ground") && rigidbody.velocity.y < 0.2f && rigidbody.velocity.y > -0.2f)
@@ -62,7 +70,11 @@ public class SliceItem : MonoBehaviour
 
                 }
 
-                audio.Play();
+                if (transform.name != "Kaktus_neg")
+                {
+                    audio.Play();
+                }
+                
             }
         }
     }
