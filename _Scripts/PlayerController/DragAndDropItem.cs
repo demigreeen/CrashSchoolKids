@@ -15,7 +15,7 @@ public class DragAndDropItem : MonoBehaviour
 
     [Space(10)]
     [Header("Item Drag Icon")]
-    [SerializeField] private GameObject canvasButton;
+    [SerializeField] private GameObject inputIcon;
     [SerializeField] private float canvasAutoScalerKoeff = 3;
 
     private Transform pointForIcon;
@@ -149,18 +149,12 @@ public class DragAndDropItem : MonoBehaviour
     {
         if (nearestItem != null && isHandsEmpty == true && timeBeforeNextDragCode <= 0)
         {
-            canvasButton.SetActive(true);
-            canvasButton.transform.position = pointForIcon.position;
-
-            canvasButton.transform.LookAt(mainCamera);
-            canvasButton.transform.rotation = Quaternion.LookRotation(mainCamera.forward, Vector3.up);
-
-            canvasButton.transform.localScale = new Vector3((Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff),(Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff), (Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff));
-            canvasButton.SetActive(true);
+            inputIcon.SetActive(true);
+            inputIcon.transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, pointForIcon.transform.TransformPoint(Vector3.zero));
         }
         else
         {
-            canvasButton.SetActive(false);
+            inputIcon.SetActive(false);
         }
     }
 

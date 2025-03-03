@@ -10,7 +10,7 @@ public class Hide : MonoBehaviour
     [Space(10)]
     [Header("Hide Place Icon")]
     [SerializeField] private Transform mainCamera;
-    [SerializeField] private GameObject canvasButton;
+    [SerializeField] private GameObject inputIcon;
     [SerializeField] private float canvasAutoScalerKoeff = 3;
 
 
@@ -70,7 +70,7 @@ public class Hide : MonoBehaviour
 
                 GetIn();
             }
-            else if (Input.GetKeyDown(KeyCode.E) && isHide == true)
+            else if (Input.GetKeyDown(KeyCode.Q) && isHide == true)
             {
                 isHide = false;
 
@@ -89,18 +89,12 @@ public class Hide : MonoBehaviour
     {
         if (hideInObject != null && isHide == false)
         {
-            canvasButton.SetActive(true);
-            canvasButton.transform.position = hideInObject.posForIcon.transform.position;
-
-            canvasButton.transform.LookAt(mainCamera);
-            canvasButton.transform.rotation = Quaternion.LookRotation(mainCamera.forward, Vector3.up);
-
-            canvasButton.transform.localScale = new Vector3((Vector3.Distance(mainCamera.position, hideInObject.transform.position) / canvasAutoScalerKoeff), (Vector3.Distance(mainCamera.position, hideInObject.transform.position) / canvasAutoScalerKoeff), (Vector3.Distance(mainCamera.position, hideInObject.transform.position) / canvasAutoScalerKoeff));
-            canvasButton.SetActive(true);
+            inputIcon.SetActive(true);
+            inputIcon.transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, hideInObject.posForIcon.transform.TransformPoint(Vector3.zero));
         }
         else
         {
-            canvasButton.SetActive(false);
+            inputIcon.SetActive(false);
         }
     }
 

@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using BzKovSoft.ObjectSlicer.Samples;
+using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Progress;
@@ -17,7 +19,7 @@ public class PushItem : MonoBehaviour
 
     [Space(10)]
     [Header("Item Drag Icon")]
-    [SerializeField] private GameObject canvasButton;
+    [SerializeField] private GameObject inputIcon;
     [SerializeField] private float canvasAutoScalerKoeff = 3;
 
     private Transform pointForIcon;
@@ -114,18 +116,21 @@ public class PushItem : MonoBehaviour
     {
         if (nearestItem != null && timeBeforeNextDragCode <= 0)
         {
-            canvasButton.SetActive(true);
-            canvasButton.transform.position = pointForIcon.transform.position;
+            inputIcon.SetActive(true);
+            inputIcon.transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, pointForIcon.transform.TransformPoint(Vector3.zero));
+            //  Vector3 screenPos = mainCamera.GetComponent<CinemachineBrain>().WorldToScreenPoint(pointForIcon.transform.position);
+            //  Vector3 uiPos = new Vector3(screenPos.x, Screen.height - screenPos.y, screenPos.z);
+            //   canvasButton.transform.position = pointForIcon.transform.position;
 
-            canvasButton.transform.LookAt(mainCamera);
-            canvasButton.transform.rotation = Quaternion.LookRotation(mainCamera.forward, Vector3.up);
+            //  canvasButton.transform.LookAt(mainCamera);
+            //   canvasButton.transform.rotation = Quaternion.LookRotation(mainCamera.forward, Vector3.up);
 
-            canvasButton.transform.localScale = new Vector3((Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff), (Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff), (Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff));
-            canvasButton.SetActive(true);
+            //  canvasButton.transform.localScale = new Vector3((Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff), (Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff), (Vector3.Distance(mainCamera.position, nearestItem.transform.position) / canvasAutoScalerKoeff));
+            //  canvasButton.SetActive(true);
         }
         else
         {
-            canvasButton.SetActive(false);
+            inputIcon.SetActive(false);
         }
     }
 
