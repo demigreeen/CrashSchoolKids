@@ -9,12 +9,12 @@ public class ItemsComeBacker : MonoBehaviour
     public Transform[] itemsTransfroms;
     public Rigidbody[] itemsRb;
 
-    private Vector3[] itemsStartPos;
-    private Vector3[] itemsStartRot;
+    public Vector3[] itemsStartPos;
+    public Vector3[] itemsStartRot;
 
-    private void Start()
+    public GameObject startCutcene;
+    private void Awake()
     {
-
         itemsStartPos = new Vector3[itemsTransfroms.Length];
         itemsStartRot = new Vector3[itemsTransfroms.Length];
 
@@ -23,13 +23,17 @@ public class ItemsComeBacker : MonoBehaviour
             itemsStartPos[i] = itemsTransfroms[i].position;
             itemsStartRot[i] = itemsTransfroms[i].eulerAngles;
         }
+    }
+    private void Start()
+    {
 
         StartCoroutine(IComeBack());
     }
 
     IEnumerator IComeBack()
     {
-        yield return new WaitForSeconds(180);
+        yield return new WaitForSeconds(2);
+        yield return new WaitUntil(() => startCutcene.activeSelf == false);
         for (int i = 0; i < itemsTransfroms.Length; i++)
         {
             if (Vector3.Distance(itemsStartPos[i], player.position) > 15 && teacher.currentState.name != teacher.goToDropedItemStateName)
@@ -39,6 +43,8 @@ public class ItemsComeBacker : MonoBehaviour
                 itemsRb[i].isKinematic = true;
             }
         }
+        yield return new WaitForSeconds(120);
         StartCoroutine(IComeBack());
+       
     }
 }

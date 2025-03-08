@@ -7,12 +7,15 @@ public class MovePlayer : MonoBehaviour
     [SerializeField] private float _speed = 1;
     [SerializeField] private float _jumpPower = 1;
     [SerializeField] LayerMask groundMask;
+    [SerializeField] private VariableJoystick joystick;
 
     private float currentSpeed = 0;
 
     private Rigidbody rb;
     private Vector3 _moveDir;
     [SerializeField]private bool isGrounded = false;
+    private bool isTapMobile;
+    private bool isMobileSprint;
 
     private void Awake(){ rb = GetComponent<Rigidbody>(); }
 
@@ -37,9 +40,19 @@ public class MovePlayer : MonoBehaviour
 
     public void Move()
     {
-        _moveDir = ((rb.transform.right * Input.GetAxis("Horizontal")) + (rb.transform.forward * Input.GetAxis("Vertical")));
+        if (RBDeviceType.isMobile() == false)
+        {
+           _moveDir = ((rb.transform.right * Input.GetAxis("Horizontal")) + (rb.transform.forward * Input.GetAxis("Vertical")));
 
-        if(Input.GetKey(KeyCode.LeftShift))
+           //Cursor.lockState = CursorLockMode.None;
+           //_moveDir = ((rb.transform.right * joystick.Horizontal) + (rb.transform.forward * joystick.Vertical));
+        }
+        else
+        {
+            _moveDir = ((rb.transform.right * joystick.Horizontal) + (rb.transform.forward * joystick.Vertical));
+        }
+
+        if(Input.GetKey(KeyCode.LeftShift) || isMobileSprint == true)
         {
             currentSpeed += _speed / 2; // Увеличиваем скорость при беге
         }
@@ -49,12 +62,13 @@ public class MovePlayer : MonoBehaviour
 
     public void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || isTapMobile == true)
         {
             if (isGrounded)
             {
                 rb.AddForce(0f, _jumpPower, 0f, ForceMode.Impulse);
                 isGrounded = false;
+                isTapMobile = false;
             }
         }
     }
@@ -63,7 +77,7 @@ public class MovePlayer : MonoBehaviour
     {
         Vector3 origin = new Vector3(transform.position.x, transform.position.y + (transform.localScale.y * 0.5f), transform.position.z);
         Vector3 direction = transform.TransformDirection(Vector3.down);
-        float distance = 0.75f;
+        float distance = 0.8f;
 
         Debug.DrawRay(origin, direction * distance, Color.red);
 
@@ -77,4 +91,18 @@ public class MovePlayer : MonoBehaviour
         }
     }
 
+    public void MobileJump()
+    {
+        isTapMobile = true; 
+    }
+
+    public void MobileTapSprint()
+    {
+        isMobileSprint = true;
+    }
+
+    public void MobileUnTapSprint()
+    {
+        isMobileSprint = false;
+    }
 }

@@ -52,6 +52,16 @@ public class Teacher : Unit
 
         playerDragAndDrop.ItemDroped += GoToDropedItem;
         pushItem.ItemDroped += GoToDropedItem;
+
+        if (basicMusic.volume == 0)
+        {
+            angryMusic.volume = 0;
+        }
+        if (basicMusic.isPlaying == false)
+        {
+            basicMusic.Play();
+        }
+    
     }
     public override void Update()
     {
@@ -135,9 +145,19 @@ public class Teacher : Unit
     {
         if (angryToUnit != null)
         {
-            progressBar.DoIconStep(angryToUnit);
+            bool isEnd = progressBar.DoIconStep(angryToUnit);
             SetState(PatrolState, ref patrolStateName);
-            cutsceneManager.StartCutscene(angryToUnit);
+            if (PlayerPrefs.GetInt("mode") == 1)
+                isEnd = false;
+
+            if (isEnd == false)
+            {
+                cutsceneManager.StartCutscene(angryToUnit);
+            }
+            else
+            {
+                cutsceneManager.StartGameOvetCutscene(angryToUnit.name);
+            }
             angryToUnit = null;
         }
         else

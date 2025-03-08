@@ -32,7 +32,27 @@ public class AngryState : State
         {
             isFinished = true;
         }
-       
+        if (PlayerPrefs.GetInt("mode") == 1)
+        {
+            switch (PlayerPrefs.GetInt("difficult"))
+            {
+                case 0:
+                    speed = speed - 0.5f;
+                    break;
+                case 1:
+                    speed = speed + 0.5f;
+                    break;
+                case 2:
+                    speed = speed + 1f;
+                    break;
+                case 3:
+                    speed = speed + 2f;
+                    break;
+                default:
+                    break;
+            }
+        }
+
 
         animator = unit.GetComponent<Animator>();
         agent = unit.GetComponent<NavMeshAgent>();

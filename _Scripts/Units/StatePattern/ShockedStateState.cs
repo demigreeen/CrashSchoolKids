@@ -13,6 +13,7 @@ public class ShockedState : State
     {
         animator = unit.GetComponent<Animator>();
         agent = unit.GetComponent<NavMeshAgent>();
+        agent.enabled = true;
         CutsceneManager.instance.cutsceneEnd +=  () => isFinished = true;  
     }
 

@@ -16,7 +16,10 @@ namespace Ricimi
 
         public void PerformTransition()
         {
-            Transition.LoadLevel(scene, duration, color);
+            if (PlayerPrefs.GetInt("mode") == 0 || gameObject.transform.name == "SettingsPlay")
+            {
+                Transition.LoadLevel(scene, duration, color);
+            }
         }
     }
 }

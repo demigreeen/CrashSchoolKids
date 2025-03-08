@@ -14,8 +14,13 @@ public class MoveToDropItemState : State
     public float visionRadius;
     public LayerMask detectedLayerMask;
     public LayerMask detectedLayerMask2;
+    public LayerMask detectedLayerMask3;
     [Space(10)]
     public float speed;
+    public float speedEasy;
+    public float speedMedium;
+    public float speedHard;
+    public float speedExtrim;
 
     private float distToItem = 2.5f;
     private Vector3 targetPos;
@@ -33,7 +38,6 @@ public class MoveToDropItemState : State
 
     public override void Init()
     {
-
         if (unit.GetComponent<Teacher>() != null)
         {
             modelTeacher = GameObject.Find("mixamorig:Head").GetComponent<Transform>();
@@ -44,7 +48,9 @@ public class MoveToDropItemState : State
         animator = unit.GetComponent<Animator>();
         agent = unit.GetComponent<NavMeshAgent>();
         agent.enabled = true;
-        agent.speed = speed;
+        agent.speed = 0;
+
+       
 
         if (FindObjectOfType<DragAndDropItem>().holdItem != null)
         {
@@ -59,13 +65,48 @@ public class MoveToDropItemState : State
         agent.destination = targetPos;
 
         timerBeforeStartLook = 1;
+
+        if (PlayerPrefs.GetInt("mode") == 1)
+        {
+            switch (PlayerPrefs.GetInt("difficult"))
+            {
+                case 0:
+                    speed = speedEasy;
+                    break;
+                case 1:
+                    speed = speedMedium;
+                    visionStartDistance += 2;
+                    visionDistance += 2;
+                    visionRadius += 2;
+                    agent.angularSpeed = agent.angularSpeed * 1.5f  ;
+                    break;
+                case 2:
+                    speed = speedHard;
+                    visionAngle = 150;
+                    visionStartDistance += 5;
+                    visionDistance += 5;
+                    visionRadius += 5;
+                    agent.angularSpeed = agent.angularSpeed * 3f;
+                    break;
+                case 3:
+                    speed = speedExtrim;
+                    visionAngle = 180;
+                    visionStartDistance += 10;
+                    visionDistance += 10;
+                    visionRadius += 10;
+                    agent.angularSpeed = agent.angularSpeed *5f;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     public override void Run()
     {
         timerBeforeStartLook -= Time.deltaTime;
         animState = AnimState.Run;
-        Move();
-        }
+        if (TutorialManager.instance.isNotHide == false) { Move(); }
+    }
 
     void Move()
     {
@@ -79,6 +120,7 @@ public class MoveToDropItemState : State
         if (agent.destination != targetPos && Vector3.Distance(unit.transform.position, targetPos) >= distToItem)
         {
             agent.destination = targetPos;
+            agent.speed = speed;
         }
         else if (Vector3.Distance(unit.transform.position, targetPos) <= distToItem)
         {
@@ -101,15 +143,15 @@ public class MoveToDropItemState : State
         {
 
             Vector3 directionToPlayer = (probablyTargerUnit.transform.position - pointEye1.transform.position).normalized;
-            directionToPlayer = new Vector3(directionToPlayer.x, directionToPlayer.y , directionToPlayer.z);
+            directionToPlayer = new Vector3(directionToPlayer.x, directionToPlayer.y + 0.5f, directionToPlayer.z);
             float angleToPlayer = Vector3.Angle(pointEye1.transform.forward, directionToPlayer);
-           Debug.Log(""+probablyTargerUnit +""+ angleToPlayer);
             if (angleToPlayer < visionAngle)
             {
                 RaycastHit hit;
-                
+
                 if (Physics.Raycast(pointEye1.transform.position, directionToPlayer, out hit, visionDistance, detectedLayerMask2))
                 {
+                    
                     if (hit.transform != null)
                     {
                         if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Classmate"))

@@ -22,12 +22,14 @@ namespace Ricimi
 
         public void SwitchSound()
         {
-            AudioListener.volume = m_soundSlider.value;
             PlayerPrefs.SetInt("sound_on", (int)m_soundSlider.value);
+            GameObject.Find("Close Button").GetComponent<AudioSource>().volume = PlayerPrefs.GetInt("sound_on");
             if (m_soundButton != null)
             {
                 m_soundButton.GetComponent<SoundButton>().ToggleSprite();
             }
+
+            MusicVolumeManager.Instance.UpdateSoundVolume();
         }
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Hide : MonoBehaviour
@@ -12,6 +14,8 @@ public class Hide : MonoBehaviour
     [SerializeField] private Transform mainCamera;
     [SerializeField] private GameObject inputIcon;
     [SerializeField] private float canvasAutoScalerKoeff = 3;
+    [Space(10)]
+    [SerializeField] private GameObject mobileIcon;
 
 
     private ObjectToHideIn hideInObject;
@@ -23,6 +27,10 @@ public class Hide : MonoBehaviour
     private PlayerController playerController;
     private CapsuleCollider capsuleCollider;
     private Rigidbody rb;
+
+    public event Action hide;
+
+    private bool isMobileTap;
     private void Start()
     {
         playerController = player.gameObject.GetComponent<PlayerController>();
@@ -59,8 +67,9 @@ public class Hide : MonoBehaviour
     {
        if (hideInObject != null)
        {
-            if (Input.GetKeyDown(KeyCode.E) && isHide == false)
+            if (Input.GetKeyDown(KeyCode.Q) && isHide == false || isMobileTap == true && isHide == false)
             {
+                hide();
                 startPlayerTransform = null;
                 startCameraTransform = null;
                 isHide = true;
@@ -68,13 +77,29 @@ public class Hide : MonoBehaviour
                 startPlayerTransform = player.transform;
                 startPlayerPosition = player.position;
 
+                isMobileTap = false;
+                mobileIcon.SetActive(true);
                 GetIn();
             }
-            else if (Input.GetKeyDown(KeyCode.Q) && isHide == true)
+            else if (Input.GetKeyDown(KeyCode.Q) && isHide == true || isMobileTap == true && isHide == true)
             {
-                isHide = false;
+                if(TutorialManager.instance.isTutorialOn == false )
+                {
+                    isHide = false;
 
-                GetOut();
+                    isMobileTap = false;
+                    mobileIcon.SetActive(false);
+                    GetOut();
+                }
+                else if (TutorialManager.instance.isTutorialOn == true && TutorialManager.instance.isNotDropped == true)
+                {
+                    isHide = false;
+
+                    isMobileTap = false;
+                    mobileIcon.SetActive(false);
+                    GetOut();
+                }
+
             }
        }
 
@@ -112,5 +137,10 @@ public class Hide : MonoBehaviour
         {
             hideInObject = null;
         }
+    }
+
+    public void MobileTap()
+    {
+        isMobileTap = true;
     }
 }

@@ -21,6 +21,8 @@ public class Door : MonoBehaviour
     private void Start()
     {
         startRotation = rotateDoor.rotation;
+
+        if (audioOpen.volume == 0 || audioClose.volume == 0) { audioOpen.volume = 0; audioClose.volume = 0; }
     }
     void Update()
     {
@@ -44,7 +46,15 @@ public class Door : MonoBehaviour
         {
             if(audioOpen.isPlaying == false)
             {
-                audioOpen.Play();
+                if (TutorialManager.instance.isTutorialOn == true && other.transform.CompareTag("Player"))
+                {
+                    
+                }
+                else
+                {
+                    audioOpen.Play();
+                }
+               
             }
         }
     }
@@ -52,7 +62,15 @@ public class Door : MonoBehaviour
     {
         if (other.transform.gameObject.layer != LayerMask.NameToLayer("Ground") && other.transform.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast"))
         {
-            isOpening = true;
+            if (TutorialManager.instance.isTutorialOn == true && other.transform.CompareTag("Player"))
+            {
+                isOpening = false;
+            }
+            else
+            {
+                isOpening = true;
+            }
+            
         }
     }
 

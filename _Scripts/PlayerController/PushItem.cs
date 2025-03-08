@@ -44,6 +44,7 @@ public class PushItem : MonoBehaviour
     private Rigidbody pushItemRb;
     private IBzSliceableNoRepeat pushItemSlicer;
     private float timeBeforeNextDragCode;
+    private bool isMobileTap;
     public event Action ItemDroped;
 
 
@@ -53,6 +54,17 @@ public class PushItem : MonoBehaviour
         nearItems = new List<GameObject>();
 
         StartCoroutine(ICheckDistance());
+
+        foreach (AudioSource source in pushAudio)
+        {
+            if (source.volume == 0)
+            {
+                foreach (AudioSource audio in pushAudio)
+                {
+                    audio.volume = 0;
+                }
+            }
+        }
     }
     private void Update()
     {
@@ -66,7 +78,7 @@ public class PushItem : MonoBehaviour
 
     public void CheckInput()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.E) || isMobileTap)
         {
             if (nearestItem != null && timeBeforeNextDragCode <= 0)
             {
@@ -109,6 +121,7 @@ public class PushItem : MonoBehaviour
         timeBeforeNextDragCode = timeBeforeNextDrag;
         pointForIcon = null;
         CheckNearClassmates();
+        isMobileTap = false;
     }
 
     // Лепим канвас с иконкой на предмет, который ближе всех
@@ -225,5 +238,10 @@ public class PushItem : MonoBehaviour
                 CheckDistanceToItems();
             }
         }
+    }
+
+    public void MobileTap()
+    {
+        isMobileTap = true;
     }
 }

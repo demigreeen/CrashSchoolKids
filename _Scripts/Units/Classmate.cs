@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Classmate : Unit
 {
-    [Space(10)]
+    [SerializeField] private Teacher teacher;
+
+     [Space(10)]
     [Header("Custom")]
     [SerializeField] private State patrolState;
     [SerializeField] private State shockedState;
@@ -29,6 +31,11 @@ public class Classmate : Unit
             {
                 SetState(patrolState, ref patrolStateName);
             }
+        }
+
+        if (currentState.name == shockedStateName && teacher.currentState.name != teacher.goToDropedItemStateName && teacher.currentState.name != teacher.lookAroundStateName && teacher.currentState.name != teacher.angryStateName)
+        {
+            SetState(patrolState, ref patrolStateName);
         }
     }
     public void GoDoNothingState()

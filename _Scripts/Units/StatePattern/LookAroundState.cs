@@ -63,7 +63,6 @@ public class LookAroundState : State
     void CheckLook()
     {
         Debug.DrawRay(pointEye1.transform.position, pointEye1.transform.forward * lookDistance, Color.red);
-        Debug.Log("look");
         if (Physics.Raycast(pointEye1.transform.position, pointEye1.transform.forward, out RaycastHit hit, lookDistance))
         {
             if (hit.transform != null)

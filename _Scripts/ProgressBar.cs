@@ -6,7 +6,7 @@ using UnityEngine.Windows;
 
 public class ProgressBar : MonoBehaviour
 {
-    [SerializeField] private int neededCountOfLose;
+    public int neededCountOfLose;
     [SerializeField] private RectTransform barTransform;
     [Space(20)]
     [SerializeField] private Image[] unitsIcons;
@@ -21,7 +21,7 @@ public class ProgressBar : MonoBehaviour
         sizeStep = countOfAllMovePixels / neededCountOfLose;
     }
 
-    public void DoIconStep(GameObject go)
+    public bool DoIconStep(GameObject go)
     {
         int i = 0;
         foreach (var unit in units)
@@ -34,10 +34,12 @@ public class ProgressBar : MonoBehaviour
                 }
                 if (unitsIcons[i].rectTransform.anchoredPosition.x < countOfAllMovePixels + 1 && unitsIcons[i].rectTransform.anchoredPosition.x > countOfAllMovePixels - 1)
                 {
-                    Debug.Log(unit.transform.name + " GAME OVER!");
+                    return true;
                 }
             }
             i++;
         }
+
+        return false;
     }
 }

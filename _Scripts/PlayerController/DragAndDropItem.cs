@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.UI.CanvasScaler;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 
@@ -26,54 +27,68 @@ public class DragAndDropItem : MonoBehaviour
     [SerializeField] private float speedMoveToHands;
     [SerializeField] LayerMask playerLayerForIgnor;
     [SerializeField] private float forceDrop;
-    [SerializeField] private float timeBeforeNextDrag;
     [SerializeField] private Teacher teacher;
+    [SerializeField] private float timeOffset;
+    [SerializeField] private Image icon;
 
-
-   [Space(10)]
+    [Space(10)]
     [Header("Detect Sphera Classmates")]
     [SerializeField] private float radius;
     [SerializeField] private LayerMask detectedLayerMask;
     [SerializeField] private LayerMask detectedLayerMask2;
     [HideInInspector] public GameObject holdItem { get; private set; }
+    [Space(10)]
+    [SerializeField] private GameObject mobileIcon;
 
 
+    private float timeOffsetCode;
      public List<GameObject> nearItems;
      private GameObject nearestItem;
      private bool isHandsEmpty = true;
      private Rigidbody holdItemRb;
      private bool isItemMovedToHands;
-     private float timeBeforeNextDragCode;
     private DrugItem drugItem;
 
     public event Action ItemDroped;
+
+    private bool isMobileTap;
 
     private void Start()
     {
         nearItems = new List<GameObject>();
 
+        timeOffsetCode = timeOffset;
+
         StartCoroutine(ICheckDistance());
     }
     private void Update()
     {
+        CheckInput();
+
         SetCanvasForAvailableItem();
 
         if (isHandsEmpty == false) { Hold(); };
-        timeBeforeNextDragCode -= Time.deltaTime;
+
+        timeOffsetCode += Time.deltaTime;
+        icon.fillAmount = timeOffsetCode / timeOffset;
 
     }
 
 
     public void CheckInput()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.E) || isMobileTap)
         {
-            if (isHandsEmpty == true && nearestItem != null && timeBeforeNextDragCode <= 0)
+            if (isHandsEmpty == true && nearestItem != null  && timeOffsetCode >= timeOffset)
             {
+                isMobileTap = false;
+                mobileIcon.SetActive(true);
                 Drag();
             }
             else if (isHandsEmpty == false && drugItem.isCanDrop == true)
             {
+                isMobileTap = false;
+                mobileIcon.SetActive(false);
                 Drop();
             }
         }
@@ -119,7 +134,6 @@ public class DragAndDropItem : MonoBehaviour
             if (FindObjectOfType<Teacher>().currentState.name != FindObjectOfType<Teacher>().angryStateName)
             {
                 ItemDroped();
-                Debug.Log("drop");
             }
         }
 
@@ -139,7 +153,7 @@ public class DragAndDropItem : MonoBehaviour
             pointForIcon.GetComponent<Point>().audio.Play();
         }
 
-        timeBeforeNextDragCode = timeBeforeNextDrag;
+        timeOffsetCode = 0;
 
         CheckNearClassmates();
     }
@@ -147,7 +161,7 @@ public class DragAndDropItem : MonoBehaviour
     // Лепим канвас с иконкой на предмет, который ближе всех
     void SetCanvasForAvailableItem()
     {
-        if (nearestItem != null && isHandsEmpty == true && timeBeforeNextDragCode <= 0)
+        if (nearestItem != null && isHandsEmpty == true)
         {
             inputIcon.SetActive(true);
             inputIcon.transform.position = RectTransformUtility.WorldToScreenPoint(Camera.main, pointForIcon.transform.TransformPoint(Vector3.zero));
@@ -237,6 +251,11 @@ public class DragAndDropItem : MonoBehaviour
             nearItems.Remove(other.gameObject);
             CheckDistanceToItems();
         }
+    }
+
+    public void MobileTap()
+    {
+        isMobileTap = true;
     }
 }
 
