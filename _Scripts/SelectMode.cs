@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 using static Cinemachine.DocumentationSortingAttribute;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class SelectMode : MonoBehaviour
 {
@@ -22,13 +24,27 @@ public class SelectMode : MonoBehaviour
         if (mode == 0)
         {
             button.sprite = spriteDefaultMode;
-            currModeText.text = "ׁ‏זוע";
+            if (YG2.lang == "ru")
+            {
+                currModeText.text = "ׁ‏זוע";
+            }
+            else
+            {
+                currModeText.text = "Story";
+            }
             PlayerPrefs.SetInt("mode", 0);
         }
         else
         {
             button.sprite = spriteFreeMode;
-            currModeText.text = "ׁגמבמהםûי";
+            if (YG2.lang == "ru")
+            {
+                currModeText.text = "ׁגמבמהםûי";
+            }
+            else
+            {
+                currModeText.text = "Free";
+            }
             PlayerPrefs.SetInt("mode", 1);
         }
     }

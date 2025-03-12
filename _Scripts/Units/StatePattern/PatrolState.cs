@@ -51,7 +51,9 @@ public class PatrolState : State
     {
         if (isFinished == false && waitTimer <= 0)
         {
-            agent.speed = speed;
+            if (TutorialManager.instance.isNotHide == false) { agent.speed = speed; }
+            else { agent.speed = 0; }
+
             Move();
             
                 if (animState != AnimState.Walk)

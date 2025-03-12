@@ -39,6 +39,8 @@ public class DragAndDropItem : MonoBehaviour
     [HideInInspector] public GameObject holdItem { get; private set; }
     [Space(10)]
     [SerializeField] private GameObject mobileIcon;
+    [Space(20)]
+    [SerializeField] private PushItem pushItem;
 
 
     private float timeOffsetCode;
@@ -63,12 +65,24 @@ public class DragAndDropItem : MonoBehaviour
     }
     private void Update()
     {
-        CheckInput();
+        if (pushItem.nearItems.Count == 0 && isHandsEmpty == true)
+        {
+            CheckInput();
 
-        SetCanvasForAvailableItem();
+            SetCanvasForAvailableItem();
 
-        if (isHandsEmpty == false) { Hold(); };
+            if (isHandsEmpty == false) { Hold(); };
+        }
+        else if (isHandsEmpty == false)
+        {
+            CheckInput();
 
+  Hold(); 
+        }
+        else
+        {
+            inputIcon.SetActive(false);
+        }
         timeOffsetCode += Time.deltaTime;
         icon.fillAmount = timeOffsetCode / timeOffset;
 
@@ -122,6 +136,9 @@ public class DragAndDropItem : MonoBehaviour
         {
             isItemMovedToHands = true;
         }
+        holdItemRb.isKinematic = true;
+        holdItemRb.isKinematic = false;
+
     }
 
 

@@ -1,0 +1,33 @@
+{
+    "stringKeys": [],
+    "stringValues": [],
+    "floatKeys": [],
+    "floatValues": [],
+    "intKeys": [
+        "NumOfSession",
+        "sound_on",
+        "music_on",
+        "mode",
+        "difficult",
+        "energy",
+        "isPassGame"
+    ],
+    "intValues": [
+        126,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+    ],
+    "intExample": 5,
+    "strExample": "Hello!",
+    "boolExample": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "idSave": 127
+}

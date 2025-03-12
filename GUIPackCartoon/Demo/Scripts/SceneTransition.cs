@@ -3,6 +3,8 @@
 // A Copy of the Asset Store EULA is available at http://unity3d.com/company/legal/as_terms.
 
 using UnityEngine;
+using YG;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 namespace Ricimi
 {
@@ -18,6 +20,7 @@ namespace Ricimi
         {
             if (PlayerPrefs.GetInt("mode") == 0 || gameObject.transform.name == "SettingsPlay")
             {
+                YG2.InterstitialAdvShow();
                 Transition.LoadLevel(scene, duration, color);
             }
         }

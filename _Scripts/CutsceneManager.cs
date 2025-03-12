@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using YG;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class CutsceneManager : MonoBehaviour
 {
@@ -33,6 +35,8 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private GameObject canvasDetail2;
     [SerializeField] private GameObject canvasDetail3;
     [SerializeField] private GameObject canvasDetail4;
+    [SerializeField] private GameObject canvasDetail5;
+    [SerializeField] private GameObject canvasDetail6;
     [SerializeField] private GameObject pressSpaceText;
     [SerializeField] private GameObject pressSpaceTextPC;
     [SerializeField] private GameObject pressForContinueMobile;
@@ -63,6 +67,8 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private GameObject playerGo;
     [SerializeField] private Transform playerStartPoint;
     [SerializeField] private GameObject skipCutsceneIcon;
+    [Space(10)]
+    [SerializeField] private Transform teacherStartPos;
 
     [Header("GAME OVER CUTSCENE")]
     [SerializeField] private GameObject gameOverCutscene;
@@ -85,6 +91,10 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private Transform victoryPoint;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
+    [SerializeField] private AudioSource loseAudio1;
+    [SerializeField] private AudioSource loseAudio2;
+    [SerializeField] private AudioSource winAudio1;
+    [SerializeField] private AudioSource winAudio2;
 
 
     private bool isGirl;
@@ -129,12 +139,18 @@ public class CutsceneManager : MonoBehaviour
             canvasDetail1.SetActive(true);
             canvasDetail2.SetActive(true);
             canvasDetail3.SetActive(true);
+            canvasDetail5.SetActive(true);
+            canvasDetail6.SetActive(true);
             if (RBDeviceType.isMobile())
                 canvasDetail4.SetActive(true);
 
             if (isNeedToShowTurorial == true)
             {
                 TutorialManager.instance.StartTutorial();
+            }
+            else
+            {
+                teacher.transform.position = teacherStartPos.position;
             }
         }
 
@@ -176,9 +192,12 @@ public class CutsceneManager : MonoBehaviour
         unit.transform.position = pointForUnit.position;
         unit.transform.rotation = pointForUnit.rotation;
 
-        foreach (GameObject obj in allUnit)
+        if (PlayerPrefs.GetInt("mode") == 0)
         {
-            if (obj != currUnit) { obj.SetActive(false); }
+            foreach (GameObject obj in allUnit)
+            {
+                if (obj != currUnit) { obj.SetActive(false); }
+            }
         }
 
         cutscene.SetActive(true);
@@ -243,6 +262,8 @@ public class CutsceneManager : MonoBehaviour
         canvasDetail1.SetActive(true);
         canvasDetail2.SetActive(true);
         canvasDetail3.SetActive(true);
+        canvasDetail5.SetActive(true);
+        canvasDetail6.SetActive(true);
         if (RBDeviceType.isMobile())
             canvasDetail4.SetActive(true);
 
@@ -252,7 +273,10 @@ public class CutsceneManager : MonoBehaviour
 
 
         skipCutsceneIcon.SetActive(false);
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        if (RBDeviceType.isMobile() == false)
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        }
     }
     public void ChangeBoyAnimation(int numState)
     {
@@ -394,23 +418,41 @@ public class CutsceneManager : MonoBehaviour
         if (isPlayer == true)
         {
             animatorBoy2.SetInteger("State", 2);
+            Invoke("Lose1", 1);
             Invoke("Lose", 3);
         }
         else if (isBoy == true)
         {
             animatorPlayer2.SetInteger("State", 2);
+            Invoke("Win1", 1);
             Invoke("Win", 3);
         }
         else if (isGirl == true)
         {
             animatorPlayer2.SetInteger("State", 2);
+            Invoke("Win1", 1);
             Invoke("Win", 3);
         }
     }
     void Win()
-    { winPanel.SetActive(true); }
+    {
+        PlayerPrefs.SetInt("isPassGame", 1);
+        PlayerPrefs.Save();
+        winPanel.SetActive(true);
+        winAudio2.Play();
+    }
+    void Win1()
+    {
+        winAudio1.Play();
+    }
     void Lose()
-    { losePanel.SetActive(true); }
+    { losePanel.SetActive(true);
+        loseAudio2.Play();
+    }
+    void Lose1()
+    {
+        loseAudio1.Play();
+    }
     public void UnitAnimateFly()
     {
         DanceAnimate();
@@ -434,7 +476,7 @@ public class CutsceneManager : MonoBehaviour
     }
     public void MobileTap ()
     {
-
+        isMobileTap = true;
     }
     IEnumerator IWaitInput()
     {
@@ -466,6 +508,8 @@ public class CutsceneManager : MonoBehaviour
             canvasDetail2.SetActive(true);
         }
         canvasDetail3.SetActive(true);
+        canvasDetail5.SetActive(true);
+        canvasDetail6.SetActive(true);
         if (RBDeviceType.isMobile())
             canvasDetail4.SetActive(true);
         teacherComponent.enabled = true;
@@ -479,21 +523,30 @@ public class CutsceneManager : MonoBehaviour
             currUnit.GetComponent<NavMeshAgent>().enabled = true;
         }
         teacher.enabled = true;
-
-        foreach (GameObject obj in allUnit)
+        if (PlayerPrefs.GetInt("mode") == 0)
         {
-            if (obj != currUnit) { obj.SetActive(true); }
+            foreach (GameObject obj in allUnit)
+            {
+                if (obj != currUnit) { obj.SetActive(true); }
+            }
         }
+
 
         currUnit = null;
         currUnitAnimator = null;
         if (cutsceneEnd != null) { cutsceneEnd(); }
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        if (RBDeviceType.isMobile() == false)
+        {
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        }
         pressSpaceText.SetActive(false);
         pressSpaceTextPC.SetActive(false);
         pressForContinueMobile.SetActive(false);
 
         isMobileTap = false;
+
+
+        YG2.InterstitialAdvShow();
     }
 
     

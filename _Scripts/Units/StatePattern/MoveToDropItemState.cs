@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 [CreateAssetMenu]
 public class MoveToDropItemState : State
@@ -106,6 +107,7 @@ public class MoveToDropItemState : State
         timerBeforeStartLook -= Time.deltaTime;
         animState = AnimState.Run;
         if (TutorialManager.instance.isNotHide == false) { Move(); }
+        else { agent.speed = 0; }
     }
 
     void Move()

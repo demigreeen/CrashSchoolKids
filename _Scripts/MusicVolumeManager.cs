@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class MusicVolumeManager : MonoBehaviour
 {
@@ -25,6 +27,15 @@ public class MusicVolumeManager : MonoBehaviour
     }
     void Start()
     {
+        PlayerPrefs.SetInt("NumOfSession", PlayerPrefs.GetInt("NumOfSession") + 1);
+        PlayerPrefs.Save();
+        if (SceneManager.GetActiveScene().buildIndex == 0 && PlayerPrefs.GetInt("NumOfSession") == 1)
+        {
+            PlayerPrefs.SetInt("energy", 1);
+            PlayerPrefs.SetInt("sound_on", 1);
+            PlayerPrefs.SetInt("music_on", 1);
+            
+        }
         AudioListener.volume = 1f;
 
         soundsVolume = new float[sounds.Length];

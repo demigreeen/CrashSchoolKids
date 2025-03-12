@@ -5,6 +5,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 namespace Ricimi
 {
@@ -23,6 +24,7 @@ namespace Ricimi
 
         public void Close()
         {
+            PlayerPrefs.Save();
             var animator = GetComponent<Animator>();
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Open"))
                 animator.Play("Close");

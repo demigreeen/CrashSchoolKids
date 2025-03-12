@@ -4,6 +4,7 @@ using UnityEngine;
 using static State;
 using UnityEngine.AI;
 using System.Runtime.InteropServices;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 [CreateAssetMenu]
 public class AngryState : State
 {

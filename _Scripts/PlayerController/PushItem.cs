@@ -7,9 +7,7 @@ using BzKovSoft.ObjectSlicer.Samples;
 using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEngine.UI.CanvasScaler;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
+
 
 public class PushItem : MonoBehaviour
 {

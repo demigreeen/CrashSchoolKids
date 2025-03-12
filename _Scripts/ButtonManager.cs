@@ -4,6 +4,8 @@ using Ricimi;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using YG;
+using PlayerPrefs = RedefineYG.PlayerPrefs;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -38,6 +40,7 @@ public class ButtonManager : MonoBehaviour
 
     public void LoadScene(int num)
     {
+        YG2.InterstitialAdvShow();
         SceneManager.LoadScene(num);
     }
 
@@ -61,6 +64,7 @@ public class ButtonManager : MonoBehaviour
 
     public void ChangeLevelDifficult(int level)
     {
+        
         PlayerPrefs.SetInt("difficult", level);
         Debug.Log(level);
     }

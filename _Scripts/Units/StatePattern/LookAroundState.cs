@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Palmmedia.ReportGenerator.Core.Reporting.Builders;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.UI.Image;
 
 [CreateAssetMenu]
 public class LookAroundState : State

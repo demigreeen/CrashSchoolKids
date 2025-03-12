@@ -22,11 +22,13 @@ public class TutorialManager : MonoBehaviour
     [Space(10)]
     [SerializeField] public GameObject textBreakChair;
     [SerializeField] public GameObject textHide;
+    [SerializeField] public GameObject energyImage1;
+    [SerializeField] public GameObject energyImage2;
 
     [HideInInspector] public bool isTutorialOn;
 
     [HideInInspector] public bool isNotDropped;
-    [HideInInspector] public bool isNotHide;
+    public bool isNotHide;
 
     private void Awake()
     {
@@ -73,6 +75,8 @@ public class TutorialManager : MonoBehaviour
     }
     IEnumerator ITutorial()
     {
+        energyImage1.SetActive(false);
+        energyImage2.SetActive(false);
         girl.SetActive(false);
         isTutorialOn = true;
         isNotDropped = true;
@@ -89,7 +93,7 @@ public class TutorialManager : MonoBehaviour
 
         textHide.SetActive(false);
 
-        yield return new WaitForSeconds(14f);
+        yield return new WaitForSeconds(12f);
         girl.SetActive(true);
         isTutorialOn = false;
         playerBlockCollider.SetActive(false);
