@@ -20,7 +20,8 @@ namespace Ricimi
         {
             if (PlayerPrefs.GetInt("mode") == 0 || gameObject.transform.name == "SettingsPlay")
             {
-                YG2.InterstitialAdvShow();
+                if(!YG2.saves.isAdBlock)
+                    YG2.InterstitialAdvShow();
                 Transition.LoadLevel(scene, duration, color);
             }
         }

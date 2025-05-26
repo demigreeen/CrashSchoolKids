@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public abstract class State : ScriptableObject
 {
     public bool isFinished { get; protected set; }
-    public AnimState animState { get { return (AnimState)unit.GetComponent<Animator>().GetInteger("States"); } set { unit.GetComponent<Animator>().SetInteger("States", (int)value);  } }
+    public AnimState animState { get { return (AnimState)unit.GetComponent<Animator>().GetInteger("States"); } set { unit.GetComponent<Animator>().SetInteger("States", (int)value); } }
     [HideInInspector] public Unit unit;
 
     public virtual void Init() { }

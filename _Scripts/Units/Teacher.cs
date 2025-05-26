@@ -38,6 +38,8 @@ public class Teacher : Unit
 
 
     [HideInInspector] public GameObject angryToUnit;
+    [Space(20)]
+    [SerializeField] public GameObject pointer;
 
     private NavMeshAgent agent;
 
@@ -77,6 +79,7 @@ public class Teacher : Unit
             }
             else
             {
+                pointer.SetActive(false);
                 SetState(PatrolState, ref patrolStateName);
                 if (angryMusic.isPlaying == true)
                 {
@@ -107,6 +110,7 @@ public class Teacher : Unit
 
     public void GoToDropedItem()
     {
+        pointer.SetActive(true);
         SetState(GoToDropedItemState, ref goToDropedItemStateName);
         if (basicMusic.isPlaying == true)
         {
@@ -141,6 +145,11 @@ public class Teacher : Unit
 
     public void GameOver()
     {
+       StartCoroutine(IGameOver());
+    }
+
+    IEnumerator IGameOver()
+    {
         if (angryToUnit != null)
         {
             bool isEnd = progressBar.DoIconStep(angryToUnit);
@@ -148,6 +157,14 @@ public class Teacher : Unit
             if (PlayerPrefs.GetInt("mode") == 1)
                 isEnd = false;
 
+            if (angryToUnit.transform.tag == "Player")
+            {
+                GoDoNothingState();
+                cutsceneManager.StartHitCutscene();
+                yield return new WaitForSeconds(0.01f);
+                currentState.animState = State.AnimState.Stay;
+                yield return new WaitForSeconds(2.4f);
+            }
             if (isEnd == false)
             {
                 cutsceneManager.StartCutscene(angryToUnit);
@@ -156,6 +173,7 @@ public class Teacher : Unit
             {
                 cutsceneManager.StartGameOvetCutscene(angryToUnit.name);
             }
+            pointer.SetActive(false);
             angryToUnit = null;
         }
         else
@@ -170,6 +188,7 @@ public class Teacher : Unit
                 basicMusic.Play();
             }
         }
+        yield return null;
     }
 
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SliceItem : MonoBehaviour
 {
+
     [Header("Slice")]
     public MeshFilter[] slicePlanes;
     [Space(10)]
@@ -55,6 +56,8 @@ public class SliceItem : MonoBehaviour
                         }
                     }
                     complete = true;
+
+                    Invoke("AddRigibody", 0.1f);
                 }
                 else
                 {
@@ -63,7 +66,8 @@ public class SliceItem : MonoBehaviour
                         if (obj.transform.parent != null)
                         {
                             obj.transform.parent = null;
-                            obj.AddComponent<Rigidbody>();
+                            obj.AddComponent<Rigidbody>().drag = 1;
+
                         }
                     }
                     complete = true;
@@ -75,6 +79,21 @@ public class SliceItem : MonoBehaviour
                     audio.Play();
                 }
                 
+            }
+        }
+    }
+
+    void AddRigibody()
+    {
+        if (removeObj != null)
+        {
+            foreach (var obj in removeObj)
+            {
+                if (obj.transform.parent != null)
+                {
+                    obj.transform.parent = null;
+                    obj.AddComponent<Rigidbody>();
+                }
             }
         }
     }

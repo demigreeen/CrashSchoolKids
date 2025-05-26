@@ -41,18 +41,23 @@ public class LookAroundState : State
 
     void PlayAnimation()
     {
-        if (currentRepeatCount < repeatCount && animator.GetCurrentAnimatorStateInfo(0).IsName("LookAround") == false && offsetUpdate <= 0)
+        if (currentRepeatCount < repeatCount && animator.GetCurrentAnimatorStateInfo(0).IsName("LookAround") == false && offsetUpdate <= 0 || currentRepeatCount < repeatCount && currentRepeatCount > 0 && animator.GetCurrentAnimatorStateInfo(0).IsName("LookAround") == true && offsetUpdate <= 0)
         {
+            Debug.Log("теуцщее колво повторений:" + currentRepeatCount);
             animState = AnimState.LookAround;
             currentRepeatCount++;
             offsetUpdate = 2.9f;
         }
         else if (offsetUpdate > 0 && currentRepeatCount < repeatCount)
         {
+            Debug.Log("теуцщее колво повторений:" + currentRepeatCount);
             offsetUpdate -= Time.deltaTime;
         }
         else if (animState == AnimState.LookAround && currentRepeatCount >= repeatCount && offsetUpdate <= 0)
         {
+            Debug.Log(3);
+            Debug.Log("теуцщее колво повторений:" + currentRepeatCount);
+            animState = AnimState.AngryStay;
             isFinished = true;
         }
         else offsetUpdate -= Time.deltaTime;

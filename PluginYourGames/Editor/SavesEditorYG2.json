@@ -5,21 +5,19 @@
     "floatValues": [],
     "intKeys": [
         "NumOfSession",
+        "energy",
         "sound_on",
         "music_on",
         "mode",
-        "difficult",
-        "energy",
-        "isPassGame"
+        "difficult"
     ],
     "intValues": [
-        126,
+        310,
+        4,
         1,
         1,
         0,
-        0,
-        1,
-        1
+        0
     ],
     "intExample": 5,
     "strExample": "Hello!",
@@ -29,5 +27,6 @@
         false,
         false
     ],
-    "idSave": 127
+    "idSave": 314,
+    "isAdBlock": true
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DrugItem : MonoBehaviour
 {
-    public bool isCanDrop;
+    [HideInInspector] public bool isCanDrop;
 
    
 
