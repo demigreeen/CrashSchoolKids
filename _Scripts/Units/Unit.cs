@@ -8,6 +8,8 @@ public abstract class Unit : MonoBehaviour
     [Header("Main")]
     public State startState;
     public State currentState;
+    public Transform currentPoint;
+    public Transform lastCurrentPoint;
 
     public virtual void Start()
     {

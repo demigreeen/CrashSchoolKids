@@ -30,7 +30,6 @@ public class Classmate : Unit
             if (true)
             {
                 SetState(patrolState, ref patrolStateName);
-                Debug.Log("PATROL");
             }
         }
 

@@ -14,15 +14,16 @@ public class PatrolState : State
 
     private NavMeshAgent agent;
     private GameObject currentPatrolArea;
-    private List<Transform> currentPatrolPoints;
-    private List<Transform> nearestPoints;
-    private Transform currentPoint;
+    public List<Transform> currentPatrolPoints;
+    public List<Transform> nearestPoints;
     private float waitTimer;
     private Animator animator;
     private bool isClassmate;
 
     public override void Init()
     {
+       // Time.timeScale = 0.2f;
+
         animator = unit.GetComponent<Animator>();
         agent = unit.GetComponent<NavMeshAgent>();
         agent.speed = 0;
@@ -32,7 +33,6 @@ public class PatrolState : State
         currentPatrolPoints = new List<Transform>();
 
         Transform[] arrayPoints = currentPatrolArea.GetComponentsInChildren<Transform>();
-        currentPoint = null;
         foreach (Transform point in arrayPoints)
         {
             if (point.name != "Area" + startPatrolArea)
@@ -59,6 +59,7 @@ public class PatrolState : State
                 if (animState != AnimState.Walk)
                 {
                     animState = AnimState.Walk;
+                Debug.Log(" animState = AnimState.Walk;" + unit.name);
                 }
             
         }
@@ -69,14 +70,15 @@ public class PatrolState : State
                 if (animState != AnimState.Stay)
                 {
                     animState = AnimState.Stay;
-                }
+                Debug.Log("animState = AnimState.Stay;" + unit.name);
+            }
             
         }
     }
 
     void Move()
     {
-        Vector3 targetPos = new Vector3(currentPoint.position.x, currentPoint.position.y, currentPoint.position.z);
+        Vector3 targetPos = new Vector3(unit.currentPoint.position.x, unit.currentPoint.position.y, unit.currentPoint.position.z);
 
         if (agent.enabled == true && agent.destination != targetPos && Vector3.Distance(unit.transform.position, targetPos) >=2)
         {
@@ -94,28 +96,63 @@ public class PatrolState : State
         currentPatrolPoints.Sort((a, b) => Vector3.Distance(unit.transform.position, a.position).CompareTo(Vector3.Distance(unit.transform.position, b.position)));
         nearestPoints = new List<Transform>();
         nearestPoints.Clear();
-        if (currentPatrolPoints[0] != currentPoint)
+        if (unit.currentPoint != null && unit.lastCurrentPoint != null)
+        {
+            if (currentPatrolPoints[0].name != unit.currentPoint.name && currentPatrolPoints[0].name != unit.lastCurrentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[0]);
+            }
+            if (currentPatrolPoints[1].name != unit.currentPoint.name && currentPatrolPoints[1].name != unit.lastCurrentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[1]);
+            }
+            if (currentPatrolPoints[2].name != unit.currentPoint.name && currentPatrolPoints[2].name != unit.lastCurrentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[2]);
+            }
+            if (currentPatrolPoints[3].name != unit.currentPoint.name && currentPatrolPoints[3].name != unit.lastCurrentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[3]);
+            }
+            if (currentPatrolPoints[4].name != unit.currentPoint.name && currentPatrolPoints[4].name != unit.lastCurrentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[4]);
+            }
+        }
+        else if (unit.currentPoint != null)
+        {
+            if (currentPatrolPoints[0].name != unit.currentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[0]);
+            }
+            if (currentPatrolPoints[1].name != unit.currentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[1]);
+            }
+            if (currentPatrolPoints[2].name != unit.currentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[2]);
+            }
+            if (currentPatrolPoints[3].name != unit.currentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[3]);
+            }
+            if (currentPatrolPoints[4].name != unit.currentPoint.name)
+            {
+                nearestPoints.Add(currentPatrolPoints[4]);
+            }
+
+        }
+        else
         {
             nearestPoints.Add(currentPatrolPoints[0]);
-        }
-        if (currentPatrolPoints[1] != currentPoint)
-        {
-            nearestPoints.Add(currentPatrolPoints[1]);
-        }
-        if (currentPatrolPoints[2] != currentPoint)
-        {
+            nearestPoints.Add(currentPatrolPoints[1]); 
             nearestPoints.Add(currentPatrolPoints[2]);
-        }
-        if (currentPatrolPoints[3] != currentPoint)
-        {
             nearestPoints.Add(currentPatrolPoints[3]);
-        }
-        if (currentPatrolPoints[4] != currentPoint)
-        {
             nearestPoints.Add(currentPatrolPoints[4]);
         }
-
-        currentPoint = nearestPoints[Random.Range(0, 4)];
+        unit.lastCurrentPoint = unit.currentPoint;
+        unit.currentPoint = nearestPoints[Random.Range(0, nearestPoints.Count)];
     }
 
     
