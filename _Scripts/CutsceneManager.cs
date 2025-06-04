@@ -349,7 +349,7 @@ public class CutsceneManager : MonoBehaviour
     public void BoyRun(Transform point)
     {
         agentBoy.enabled = true;
-        agentBoy.speed = 5f;
+        agentBoy.speed = 6f;
         agentBoy.destination = point.position;
     }
     public void TeacherRotate(Transform point)

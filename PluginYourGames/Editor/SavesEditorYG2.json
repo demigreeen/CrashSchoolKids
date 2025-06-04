@@ -12,11 +12,11 @@
         "difficult"
     ],
     "intValues": [
-        356,
+        413,
         4,
         1,
         1,
-        0,
+        1,
         0
     ],
     "intExample": 5,
@@ -27,6 +27,6 @@
         false,
         false
     ],
-    "idSave": 360,
+    "idSave": 417,
     "isAdBlock": true
 }

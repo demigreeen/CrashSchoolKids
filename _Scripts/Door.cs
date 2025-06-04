@@ -42,6 +42,7 @@ public class Door : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+       
         if (isOpening == false && other.transform.gameObject.layer != LayerMask.NameToLayer("Ground") && other.transform.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast"))
         {
             if(audioOpen.isPlaying == false)
