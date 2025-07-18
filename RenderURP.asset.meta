@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:RenderURP.asset.meta
 guid: ed56aaaf19e4bef439745c2fad8cb051
+========
+guid: aeb8129ddb4df6e4e927f565b9a7be20
+>>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic):_Scenes/SampleScene/LightingData.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:SCHOOL/03_TEXTURE/18 мая 2025 г., 18_05_04.png.meta
 guid: 21d27ce5d59eb42c390112daa85f4b19
+========
+guid: 218bc37e3303ee34caa6243d32793ef8
+>>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic):_Scenes/SampleScene/Lightmap-0_comp_dir.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +76,11 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
+<<<<<<<< HEAD:SCHOOL/03_TEXTURE/18 мая 2025 г., 18_05_04.png.meta
     textureCompression: 1
+========
+    textureCompression: 2
+>>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic):_Scenes/SampleScene/Lightmap-0_comp_dir.png.meta
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0

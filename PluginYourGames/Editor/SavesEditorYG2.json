@@ -5,19 +5,30 @@
     "floatValues": [],
     "intKeys": [
         "NumOfSession",
-        "energy",
         "sound_on",
         "music_on",
         "mode",
-        "difficult"
+        "difficult",
+        "energy",
+        "isPassGame"
     ],
     "intValues": [
+<<<<<<< HEAD
         428,
         4,
         1,
         1,
         1,
         0
+=======
+        126,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic)
     ],
     "intExample": 5,
     "strExample": "Hello!",
@@ -27,6 +38,10 @@
         false,
         false
     ],
+<<<<<<< HEAD
     "idSave": 432,
     "isAdBlock": true
+=======
+    "idSave": 127
+>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic)
 }

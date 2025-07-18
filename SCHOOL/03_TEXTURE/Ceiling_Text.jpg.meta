@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:SCHOOL/03_TEXTURE/Ceiling_Text.jpg.meta
 guid: be11e66a39a774d89a1b35e6b7ff3c43
+========
+guid: 8d082a4651f6ff24a9d90c96b483c85f
+>>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic):_Scenes/SampleScene/ReflectionProbe-0.exr.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -95,6 +99,35 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: WebGL
+<<<<<<<< HEAD:SCHOOL/03_TEXTURE/Ceiling_Text.jpg.meta
+========
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: 10
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: tvOS
+>>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic):_Scenes/SampleScene/ReflectionProbe-0.exr.meta
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1

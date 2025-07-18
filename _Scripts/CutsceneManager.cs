@@ -12,7 +12,7 @@ public class CutsceneManager : MonoBehaviour
     public static CutsceneManager instance;
 
     [Header("ANGRY CUTSCENE")]
-    public GameObject cutscene;
+    [SerializeField] private GameObject cutscene;
     [Space(20)]
     [SerializeField] private Transform pointForUnit;
     [SerializeField] private Transform pointForTeacher;
@@ -67,7 +67,6 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private GameObject playerGo;
     [SerializeField] private Transform playerStartPoint;
     [SerializeField] private GameObject skipCutsceneIcon;
-    [SerializeField] private GameObject learningPanel;
     [Space(10)]
     [SerializeField] private Transform teacherStartPos;
 
@@ -97,24 +96,15 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private AudioSource winAudio1;
     [SerializeField] private AudioSource winAudio2;
 
-    [Header("HIT CUTSCENE")]
-    [SerializeField] private GameObject hitCutscene;
-    [SerializeField] private GameObject playerComponent4;
-    [SerializeField] private GameObject playerComponent5;
-    [Space(50)]
-    [Header("OTHER")]
-    [SerializeField] private GameObject personArm;
-    [Header("MUSIC")]
-    [SerializeField] private AudioSource backMusicCutscene;
 
     private bool isGirl;
     private bool isBoy;
     private bool isPlayer;
     private bool isMobileTap;
-    private bool isCutscene = false;
 
     private void Start()
     {
+
         if (instance == null)
         {
             instance = this;
@@ -151,7 +141,7 @@ public class CutsceneManager : MonoBehaviour
             canvasDetail3.SetActive(true);
             canvasDetail5.SetActive(true);
             canvasDetail6.SetActive(true);
-            if (RBDeviceType.MyIsMobile())
+            if (RBDeviceType.isMobile())
                 canvasDetail4.SetActive(true);
 
             if (isNeedToShowTurorial == true)
@@ -171,18 +161,9 @@ public class CutsceneManager : MonoBehaviour
         {
             MoveCamera();
         }
-        else if(currUnit.GetComponent<NavMeshAgent>() != null && cutscene.activeSelf == true && currUnit != null)
-        {
-            currUnit.GetComponent<NavMeshAgent>().enabled = false;
-        }
-
     }
     public void StartCutscene(GameObject unit)
     {
-        EndHitCutscene();
-
-        isCutscene = true;
-        personArm.SetActive(false);
         teacherAnimator = teacher.transform.GetComponent<Animator>();
         currUnitAnimator = unit.GetComponent<Animator>();
 
@@ -221,9 +202,9 @@ public class CutsceneManager : MonoBehaviour
 
         cutscene.SetActive(true);
 
-        UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
 
-        if (RBDeviceType.MyIsMobile() == false)
+        if (RBDeviceType.isMobile() == false)
         {
             pressSpaceTextPC.SetActive(true) ;
         }
@@ -240,8 +221,6 @@ public class CutsceneManager : MonoBehaviour
     }
     public void StartStartCutscene()
     {
-        backMusicCutscene.Play();
-        isCutscene = true;
         startCutscene.SetActive(true);
         foreach (var item in allOffUnit)
         {
@@ -259,16 +238,11 @@ public class CutsceneManager : MonoBehaviour
         playerComponent3.SetActive(true);
         playerRb.isKinematic = true;
 
-        UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
         skipCutsceneIcon.SetActive(true);
     }
     public void EndStartCutscene()
     {
-        backMusicCutscene.Stop();
-        isCutscene = false;
-        Debug.Log("is Stoped");
-        learningPanel.SetActive(true);
-        StopProcess();
         startCutscene.SetActive(false);
         foreach (var item in allOffUnit)
         {
@@ -290,7 +264,7 @@ public class CutsceneManager : MonoBehaviour
         canvasDetail3.SetActive(true);
         canvasDetail5.SetActive(true);
         canvasDetail6.SetActive(true);
-        if (RBDeviceType.MyIsMobile())
+        if (RBDeviceType.isMobile())
             canvasDetail4.SetActive(true);
 
         playerGo.transform.position = playerStartPoint.position;
@@ -299,25 +273,11 @@ public class CutsceneManager : MonoBehaviour
 
 
         skipCutsceneIcon.SetActive(false);
-        //if (RBDeviceType.isMobile() == false)
-        //{
-        //    UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        //}
-    }
-
-    private void StopProcess()
-    {
-        Time.timeScale = 0;
-    }
-    public void PlayProcess()
-    {
-        Time.timeScale = 1;
-        if (RBDeviceType.MyIsMobile() == false)
+        if (RBDeviceType.isMobile() == false)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         }
     }
-
     public void ChangeBoyAnimation(int numState)
     {
         animatorBoy.SetInteger("State", numState);
@@ -379,8 +339,6 @@ public class CutsceneManager : MonoBehaviour
 
     public void StartGameOvetCutscene(string nameUnit)
     {
-        EndHitCutscene();
-
         gameOverCutscene.SetActive(true);
 
         playerHide.enabled = false;
@@ -466,13 +424,13 @@ public class CutsceneManager : MonoBehaviour
         else if (isBoy == true)
         {
             animatorPlayer2.SetInteger("State", 2);
-            Invoke("Win1", 2);
+            Invoke("Win1", 1);
             Invoke("Win", 3);
         }
         else if (isGirl == true)
         {
             animatorPlayer2.SetInteger("State", 2);
-            Invoke("Win1", 2);
+            Invoke("Win1", 1);
             Invoke("Win", 3);
         }
     }
@@ -482,7 +440,6 @@ public class CutsceneManager : MonoBehaviour
         PlayerPrefs.Save();
         winPanel.SetActive(true);
         winAudio2.Play();
-        YG2.ReviewShow();
     }
     void Win1()
     {
@@ -523,7 +480,7 @@ public class CutsceneManager : MonoBehaviour
     }
     IEnumerator IWaitInput()
     {
-        if (RBDeviceType.MyIsMobile() == false)
+        if (RBDeviceType.isMobile() == false)
         {
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         }
@@ -532,7 +489,7 @@ public class CutsceneManager : MonoBehaviour
             yield return new WaitUntil(() => isMobileTap == true);
         }
 
-        personArm.SetActive(true);
+
         teacherComponent.angryMusic.Stop();
 
         currUnitAnimator.SetBool("isSad", false);
@@ -553,7 +510,7 @@ public class CutsceneManager : MonoBehaviour
         canvasDetail3.SetActive(true);
         canvasDetail5.SetActive(true);
         canvasDetail6.SetActive(true);
-        if (RBDeviceType.MyIsMobile())
+        if (RBDeviceType.isMobile())
             canvasDetail4.SetActive(true);
         teacherComponent.enabled = true;
 
@@ -578,7 +535,7 @@ public class CutsceneManager : MonoBehaviour
         currUnit = null;
         currUnitAnimator = null;
         if (cutsceneEnd != null) { cutsceneEnd(); }
-        if (RBDeviceType.MyIsMobile() == false)
+        if (RBDeviceType.isMobile() == false)
         {
             UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         }
@@ -588,39 +545,9 @@ public class CutsceneManager : MonoBehaviour
 
         isMobileTap = false;
 
-        if(!YG2.saves.isAdBlock)
-            YG2.InterstitialAdvShow();
+
+        YG2.InterstitialAdvShow();
     }
 
-    public void StartHitCutscene()
-    {
-        hitCutscene.SetActive(true);
-
-        playerHide.enabled = false;
-        player.enabled = false;
-        playerComponent1.enabled = false;
-        playerComponent2.enabled = false;
-        playerComponent4.SetActive(false);
-        playerComponent5.SetActive(false);
-        playerRb.isKinematic = true;
-
-        teacher.enabled = false;
-        teacherComponent.GetComponent<Animator>().SetTrigger("Hit");
-
-    }
-
-    public void EndHitCutscene()
-    {
-        hitCutscene.SetActive(false);
-
-        playerHide.enabled = true;
-        player.enabled = true;
-        playerComponent1.enabled = true;
-        playerComponent2.enabled = true;
-        playerComponent4.SetActive(true);
-        playerComponent5.SetActive(true);
-        playerRb.isKinematic = false;
-
-        teacher.enabled = true;
-    }
+    
 }

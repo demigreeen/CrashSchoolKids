@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:SCHOOL/03_TEXTURE/123456789.jpg.meta
 guid: 19756bfde851340e1974cb4bfde81c4a
+========
+guid: 280a15af572ff0a4fadab802394d9c48
+>>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic):_Scenes/SampleScene/Lightmap-0_comp_light.exr.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +76,11 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
+<<<<<<<< HEAD:SCHOOL/03_TEXTURE/123456789.jpg.meta
     textureCompression: 1
+========
+    textureCompression: 2
+>>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic):_Scenes/SampleScene/Lightmap-0_comp_light.exr.meta
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -95,6 +103,35 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: WebGL
+<<<<<<<< HEAD:SCHOOL/03_TEXTURE/123456789.jpg.meta
+========
+    maxTextureSize: 1024
+    resizeAlgorithm: 0
+    textureFormat: 24
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: tvOS
+>>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic):_Scenes/SampleScene/Lightmap-0_comp_light.exr.meta
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1

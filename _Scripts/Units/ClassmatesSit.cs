@@ -14,24 +14,15 @@ public class ClassmatesSit : MonoBehaviour
     bool isSit;
     float time;
     float time2;
-    GameObject cutscene;
-
-    private void Start()
-    {
-        cutscene = GameObject.Find("MainCanvas").GetComponent<CutsceneManager>().cutscene;
-    }
 
     private void Update()
     {
         if (classmate != null && isSit == true && classmate.currentState.name == classmate.DoNothingStateName && time > 0)
         {
-            if (cutscene.activeSelf == false)
-            {
-                classmate.currentState.animState = State.AnimState.Sit;
-                classmate.transform.position = Vector3.MoveTowards(classmate.transform.position, pointForTeacher.position, 3 * Time.deltaTime);
-                classmate.transform.rotation = pointForTeacher.rotation;
-                time -= Time.deltaTime;
-            }
+            classmate.currentState.animState = State.AnimState.Sit;
+            classmate.transform.position = Vector3.MoveTowards(classmate.transform.position, pointForTeacher.position, 3 * Time.deltaTime);
+            classmate.transform.rotation = pointForTeacher.rotation;
+            time -= Time.deltaTime;
         }
         else if (classmate != null && isSit == true && classmate.currentState.name != classmate.DoNothingStateName)
         {

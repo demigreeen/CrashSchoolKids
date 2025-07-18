@@ -1,7 +1,7 @@
 {
     "redirection": "",
-    "documentation": "https://max-games.ru/plugin-yg/doc",
-    "chat": "https://t.me/pluginYG2",
+    "documentation": "https://max-games.ru/plugin-yg/",
+    "chat": "https://t.me/pluginYG",
     "video": "https://www.youtube.com/playlist?list=PLjS5DHdpBH0Q9qKLenTNbYwaB5IIIsCya",
     "playerImage": "https://max-games.ru/public/pluginYG2/images/player.png",
     "purchaseImage": "https://max-games.ru/public/pluginYG2/images/purchase.png",
@@ -16,7 +16,7 @@
             "name": "YandexGames",
             "version": "1.004",
             "download": "https://max-games.ru/public/pluginYG2/platforms/YandexGames.unitypackage",
-            "doc": "https://max-games.ru/plugin-yg/yandexgames/",
+            "doc": "https://max-games.ru/plugin-yg/doc/",
             "platform": true
         },
         {
@@ -37,7 +37,11 @@
         },
         {
             "name": "InterstitialAdv",
+<<<<<<< HEAD
             "version": "1.003",
+=======
+            "version": "1.001",
+>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic)
             "download": "https://max-games.ru/public/pluginYG2/modules/InterstitialAdv.unitypackage",
             "doc": "https://max-games.ru/plugin-yg/doc/inter-ad/"
         },
@@ -55,7 +59,11 @@
         },
         {
             "name": "Authorization",
+<<<<<<< HEAD
             "version": "1.022",
+=======
+            "version": "1.0",
+>>>>>>> parent of 8c96b670 (BeforeUpdateGraphic)
             "download": "https://max-games.ru/public/pluginYG2/modules/Authorization.unitypackage",
             "doc": "https://max-games.ru/plugin-yg/doc/auth/"
         },
@@ -94,14 +102,14 @@
         },
         {
             "name": "AutoTranslateLangs",
-            "version": "1.002",
+            "version": "1.001",
             "download": "https://max-games.ru/public/pluginYG2/modules/AutoTranslateLangs.unitypackage",
             "doc": "https://max-games.ru/plugin-yg/doc/lang/",
             "dependencies": "Localization"
         },
         {
             "name": "Payments",
-            "version": "1.01",
+            "version": "1.0",
             "download": "https://max-games.ru/public/pluginYG2/modules/Payments.unitypackage",
             "doc": "https://max-games.ru/plugin-yg/doc/pay/"
         },
@@ -115,19 +123,19 @@
             "name": "Review",
             "version": "1.0",
             "download": "https://max-games.ru/public/pluginYG2/modules/Review.unitypackage",
-            "doc": "https://max-games.ru/review/"
+            "doc": "https://max-games.ru/other/"
         },
         {
             "name": "StickyAdv",
             "version": "1.0",
             "download": "https://max-games.ru/public/pluginYG2/modules/StickyAdv.unitypackage",
-            "doc": "https://max-games.ru/sticky-ad/"
+            "doc": "https://max-games.ru/other/"
         },
         {
             "name": "ServerTime",
-            "version": "1.01",
+            "version": "1.0",
             "download": "https://max-games.ru/public/pluginYG2/modules/ServerTime.unitypackage",
-            "doc": "https://max-games.ru/server-time/"
+            "doc": "https://max-games.ru/other/"
         },
         {
             "name": "Fullscreen",
@@ -159,7 +167,7 @@
             "name": "GameLabel",
             "version": "1.0",
             "download": "https://max-games.ru/public/pluginYG2/modules/GameLabel.unitypackage",
-            "doc": "https://max-games.ru/game-label/"
+            "doc": "https://max-games.ru/other/"
         },
         {
             "name": "QuitGameEvent",

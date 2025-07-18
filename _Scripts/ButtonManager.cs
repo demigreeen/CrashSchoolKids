@@ -15,11 +15,6 @@ public class ButtonManager : MonoBehaviour
 
     private void Start()
     {
-        if (YG2.saves.isAdBlock == true)
-        {
-            YG2.StickyAdActivity(false);
-        }
-
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             cutsceneManager = GetComponent<CutsceneManager>();
@@ -45,11 +40,8 @@ public class ButtonManager : MonoBehaviour
 
     public void LoadScene(int num)
     {
-        if(!YG2.saves.isAdBlock)
-            YG2.InterstitialAdvShow();
-
+        YG2.InterstitialAdvShow();
         SceneManager.LoadScene(num);
-        Time.timeScale = 1;
     }
 
     public void ChangeMode()
@@ -75,10 +67,5 @@ public class ButtonManager : MonoBehaviour
         
         PlayerPrefs.SetInt("difficult", level);
         Debug.Log(level);
-    }
-
-    public void OpenLink(string link)
-    {
-        Application.OpenURL(link);
     }
 }

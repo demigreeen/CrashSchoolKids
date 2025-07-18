@@ -10,7 +10,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] public DragAndDropItem playerDrag;
     [SerializeField] public PushItem playerPush;
     [SerializeField] public Hide playerHide;
-    [SerializeField] public MovePlayer player;
     [SerializeField] public GameObject camera;
     [Space(10)]
     [SerializeField] public GameObject playerBlockCollider;
@@ -78,7 +77,6 @@ public class TutorialManager : MonoBehaviour
     {
         energyImage1.SetActive(false);
         energyImage2.SetActive(false);
-        player.isEnergy = false;
         girl.SetActive(false);
         isTutorialOn = true;
         isNotDropped = true;

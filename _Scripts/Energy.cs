@@ -19,16 +19,9 @@ public class Energy : MonoBehaviour
     private void Start()
     {
         timerCode = activeSeconds;
-
-        currentCountOfEnergy = PlayerPrefs.GetInt("energy");
-        countText.text = "x" + currentCountOfEnergy.ToString();
     }
 
-    private void OnEnable()
-    {
-        currentCountOfEnergy = PlayerPrefs.GetInt("energy");
-        countText.text = "x" + currentCountOfEnergy.ToString();
-    }
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T) && fillIcon.transform.gameObject.activeSelf == true)
@@ -45,14 +38,7 @@ public class Energy : MonoBehaviour
         {
             timerCode += Time.deltaTime;
         }
-        else
-        {
-            currentCountOfEnergy = PlayerPrefs.GetInt("energy");
-            countText.text = "x" + currentCountOfEnergy.ToString();
-        }
-
         fillIcon.fillAmount = timerCode / activeSeconds;
-
         if (timerCode <= activeSeconds && fillIcon.gameObject.activeSelf == true)
         {
             player.isEnergy = true;
@@ -75,6 +61,12 @@ public class Energy : MonoBehaviour
             timerCode = 0;
             PlayerPrefs.SetInt("energy", currentCountOfEnergy);
         }
+    }
+
+    private void OnEnable()
+    {
+        currentCountOfEnergy = PlayerPrefs.GetInt("energy");
+        countText.text = "x" + currentCountOfEnergy.ToString();
     }
 
     // Вызов рекламы за вознаграждение
